@@ -7,12 +7,13 @@ const routes = [
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
-        path: '/search/:searchQuery',
+        // path: '/search/:searchQuery',
+        path: '/search',
         name: "Word Search",
         component: () => import("@/views/Search.vue"),
       },
       {
-        path: ':word',
+        path: '/word/:word',
         name: "Word Definition",
         component: () => import('@/views/Word.vue'),
       },
