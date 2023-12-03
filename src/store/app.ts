@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { AnglishToEnglish, EnglishToAnglish } from '@/types'
+import { AnglishToEnglish, AnglishToEnglishEntry, EnglishToAnglish } from '@/types'
 import { Ref, ref } from 'vue';
 
 
@@ -53,8 +53,19 @@ export const useAppStore = defineStore("app", () => {
     })
   });
 
+  const emptyAnglishToEnglishEntry: AnglishToEnglishEntry = {
+    word: "",
+    anglish_spelling: "",
+    definitions: "",
+    pos: "",
+    forebear: "",
+    taken_from: "",
+    notes: "",
+  }
+
   return {
     anglishToEnglishDictionary,
     englishToAnglishDictionary,
+    emptyAnglishToEnglishEntry,
   }
 });

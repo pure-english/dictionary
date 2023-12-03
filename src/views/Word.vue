@@ -51,19 +51,23 @@
 
                       <p><b>Taken From:</b> {{ definition.taken_from }}</p>
 
-                      <p><b>Notes:</b> {{ definition.notes }}</p>
+                      <p v-if="definition.notes">
+                        <b>Notes:</b> {{ definition.notes }}
+                      </p>
                     </li>
                 </ol>
               </div>
             </div>
             <div v-else>
-              <p>
-                <b>No word '{{ $route.params.word }}' found in the Anglish Wordbook!</b>
-              </p>
+              <center>
+                <p>
+                  <b>No word '{{ $route.params.word }}' found in the Anglish Wordbook!</b>
+                </p>
 
-              <p>
-                Perhaps try making it yourself!
-              </p>
+                <p>
+                  Perhaps try making it yourself!
+                </p>
+              </center>
             </div>
           </v-sheet>
         </v-col>
@@ -85,8 +89,6 @@
 </template>
 
 <script setup lang="ts">
-import { AnglishToEnglish, AnglishWord } from '@/types';
-import { Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAppStore } from '@/store/app';
 import { storeToRefs } from 'pinia';
@@ -95,40 +97,6 @@ const route = useRoute();
 const store = useAppStore();
 const { anglishToEnglishDictionary } = storeToRefs(store);
 const foundWord = anglishToEnglishDictionary.value[route.params.word.toString()];
-
-// Empty AnglishToEnglish dict
-// const anglishToEnglishDictionary: Ref<AnglishToEnglish> = ref({
-//   "english_word": {
-//     "pos": [{
-//       word: "",
-//       anglish_spelling: "",
-//       definitions: "",
-//       pos: "",
-//       forebear: "",
-//       taken_from: "",
-//       notes: "",
-//     }]
-//   }
-// });
-// const foundWord: Ref<AnglishWord> = ref({
-//   "pos": [{
-//       word: "",
-//       anglish_spelling: "",
-//       definitions: "",
-//       pos: "",
-//       forebear: "",
-//       taken_from: "",
-//       notes: "",
-//     }]
-// });
-
-// fetch("/anglish_to_english.json").then((a) => {
-//   a.json().then((data: AnglishToEnglish) => {
-//     anglishToEnglishDictionary.value = data;
-//     console.log("Loaded words!");
-//     foundWord.value = anglishToEnglishDictionary.value[route.params.word.toString()];
-//   })
-// });
 </script>
 
 <style scoped>

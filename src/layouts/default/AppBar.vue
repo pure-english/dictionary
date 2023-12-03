@@ -33,8 +33,6 @@ import { ref } from 'vue';
 let searchBarValue = ref("");
 
 function searchWord() {
-
-
   // Go to the word search results
   router.push({ path: "/search", query: { word: searchBarValue.value } });
 }
