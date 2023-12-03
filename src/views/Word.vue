@@ -2,7 +2,7 @@
   <!-- <h1>Word Definition</h1>
   <p>Your word is '{{ $route.params.word }}'</p> -->
 
-  <v-main class="bg-grey-lighten-3">
+  <v-main class="fill-height bg-grey-lighten-3">
     <v-container>
       <v-row>
         <v-col
