@@ -1,8 +1,8 @@
 <template>
-  <h2><center>Germanic Alternatives</center></h2>
+  <h2><u><center>Germanic English Alternatives</center></u></h2>
 
 
-  <h2><center>Anglish Alternatives</center></h2>
+  <h2><u><center>Anglish Alternatives</center></u></h2>
   <div v-for="(words, pos) in anglishEnglishWord" :key="pos">
     <h3 class="mb-5"><center>{{ pos }}</center></h3>
     <v-card
@@ -39,6 +39,13 @@
       </v-card-text>
     </v-card>
   </div>
+
+  <h2><u><center>Other Alternatives</center></u></h2>
+  <!-- Fuzzy search of Germanic Thesaurus -->
+  <!-- Fuzzy search of Anglish Wordbook -->
+  <!-- Germanic-like words from GT -->
+
+  <h2><u><center>Anglish Words</center></u></h2>
 </template>
 
 <script setup lang="ts">
@@ -52,5 +59,9 @@ defineProps<{
 <style scoped>
 p {
   padding-bottom: 5px;
+}
+
+h2 {
+  padding-bottom: 8px;
 }
 </style>

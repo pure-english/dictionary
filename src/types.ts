@@ -1,3 +1,5 @@
+// English to Anglish stuff
+
 // A single Anglish word
 export interface AnglishEntry {
   anglish_word: string,
@@ -18,13 +20,48 @@ export interface EnglishToAnglish {
   [word: string]: EnglishWord,
 }
 
-// "per": {
-//   "Preposition": [{
-//       "anglish_word": "a",
-//       "anglish_spelling": "",
-//       "definitions": "per",
-//       "forebear": "~",
-//       "taken_from": "NE",
-//       "notes": ""
-//   }]
-// },
+// Anglish to English stuff
+
+// Difference is, there's a POS tag now
+export interface AnglishToEnglishEntry {
+  word: string,
+  anglish_spelling: string,
+  definitions: string,
+  pos: string,
+  forebear: string,
+  taken_from: string,
+  notes: string,
+}
+
+export interface AnglishWord {
+  [pos: string]: Array<AnglishToEnglishEntry>,
+}
+
+export interface AnglishToEnglish {
+  [word: string]: AnglishWord,
+}
+
+/**
+ * {
+ *  "a": {
+        "Preposition": [{
+            "word": "a",
+            "anglish_spelling": "",
+            "definitions": "per",
+            "pos": "Preposition",
+            "forebear": "~",
+            "taken_from": "NE",
+            "notes": ""
+        }],
+        "Prefix": [{
+            "word": "a",
+            "anglish_spelling": "",
+            "definitions": "( for verbs denotes away , out , up , on ), ( for nouns denotes in , on , at )",
+            "pos": "Prefix",
+            "forebear": "~",
+            "taken_from": "NE",
+            "notes": ""
+        }]
+    },
+ * }
+ */

@@ -36,7 +36,7 @@ const englishToAnglishDictionary: Ref<EnglishToAnglish> = ref({
 fetch("/english_to_anglish.json").then((a) => {
   a.json().then((data: EnglishToAnglish) => {
     englishToAnglishDictionary.value = data;
-    console.log("Loaded names!");
+    console.log("Loaded words!");
   })
 });
 

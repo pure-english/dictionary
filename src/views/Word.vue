@@ -26,7 +26,45 @@
             min-height="70vh"
             rounded="lg"
           >
-            Sheet 2
+            <h2>
+              <center>Definitions for '{{ $route.params.word }}'</center>
+            </h2>
+
+            <div v-if="$route.params.word.toString() in anglishToEnglishDictionary">
+              <h3><u><center>Anglish</center></u></h3>
+
+              <div v-for="(definitions, pos) in foundWord" :key="pos">
+                <h4><u>{{ pos }}</u></h4>
+
+                <ol>
+                    <li v-for="(definition, index) in definitions" :key="index">
+                      <p>{{ definition.definitions }}</p>
+
+                      <p>
+                        <b>Spelling:</b> {{ definition.word }}
+                        <span v-if="definition.anglish_spelling">
+                          ({{ definition.anglish_spelling }})
+                        </span>
+                      </p>
+
+                      <p><b>Forebear:</b> {{ definition.forebear }}</p>
+
+                      <p><b>Taken From:</b> {{ definition.taken_from }}</p>
+
+                      <p><b>Notes:</b> {{ definition.notes }}</p>
+                    </li>
+                </ol>
+              </div>
+            </div>
+            <div v-else>
+              <p>
+                <b>No word '{{ $route.params.word }}' found in the Anglish Wordbook!</b>
+              </p>
+
+              <p>
+                Perhaps try making it yourself!
+              </p>
+            </div>
           </v-sheet>
         </v-col>
 
@@ -47,5 +85,66 @@
 </template>
 
 <script setup lang="ts">
+import { AnglishToEnglish, AnglishWord } from '@/types';
+import { Ref, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+
+// Empty AnglishToEnglish dict
+const anglishToEnglishDictionary: Ref<AnglishToEnglish> = ref({
+  "english_word": {
+    "pos": [{
+      word: "",
+      anglish_spelling: "",
+      definitions: "",
+      pos: "",
+      forebear: "",
+      taken_from: "",
+      notes: "",
+    }]
+  }
+});
+const foundWord: Ref<AnglishWord> = ref({
+  "pos": [{
+      word: "",
+      anglish_spelling: "",
+      definitions: "",
+      pos: "",
+      forebear: "",
+      taken_from: "",
+      notes: "",
+    }]
+});
+
+fetch("/anglish_to_english.json").then((a) => {
+  a.json().then((data: AnglishToEnglish) => {
+    anglishToEnglishDictionary.value = data;
+    console.log("Loaded words!");
+    foundWord.value = anglishToEnglishDictionary.value[route.params.word.toString()];
+  })
+});
 </script>
+
+<style scoped>
+h2 {
+  padding-top: 23px;
+}
+
+h4 {
+  padding-top: 8px;
+  padding-left: 30px;
+}
+
+ol {
+  padding-left: 35px;
+}
+
+li {
+  padding-top: 14px;
+}
+
+p {
+  padding-bottom: 5px;
+}
+</style>
