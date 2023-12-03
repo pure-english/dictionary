@@ -45,6 +45,43 @@
 
   <div v-if="searchedWord in anglishToEnglishDictionary">
     <h2><u><center>Anglish Words</center></u></h2>
+
+    <div v-for="(words, pos) in anglishToEnglishDictionary[searchedWord]" :key="pos">
+      <h3 class="mb-5"><center>{{ pos }}</center></h3>
+      <v-card
+        v-for="(word, index) in words"
+        :key="index"
+        class="mb-5"
+      >
+        <v-card-item>
+          <v-card-title>
+            <router-link :to="`/word/${word.word}`">
+              {{ word.word }}
+              <span v-if="word.word != word.anglish_spelling &&
+              word.anglish_spelling">
+                ({{ word.anglish_spelling }})
+              </span>
+            </router-link>
+          </v-card-title>
+
+          <v-card-subtitle>{{ word.taken_from }}</v-card-subtitle>
+        </v-card-item>
+
+        <v-card-text>
+          <p>
+            <b>Definitions:</b> {{ word.definitions }}
+          </p>
+
+          <p>
+            <b>Forebear:</b> {{ word.forebear }}
+          </p>
+
+          <p v-if="word.notes">
+            <b>Notes:</b> {{ word.notes }}
+          </p>
+        </v-card-text>
+      </v-card>
+    </div>
   </div>
 
   <div v-if="false">
