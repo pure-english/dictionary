@@ -12,6 +12,13 @@ import { Ref, ref } from 'vue';
 // })
 
 export const useAppStore = defineStore("app", () => {
+  const anglishToEnglishPath = process.env.NODE_ENV === 'production'
+    ? "/dictionary/anglish_to_english.json"
+    : "/anglish_to_english.json";
+  const englishToAnglishPath = process.env.NODE_ENV === 'production'
+    ? "/dictionary/english_to_anglish.json"
+    : "/english_to_anglish.json";
+
   const anglishToEnglishDictionary: Ref<AnglishToEnglish> = ref({
     "NOT_LOADED": {
       "pos": [{
@@ -26,7 +33,7 @@ export const useAppStore = defineStore("app", () => {
     }
   });
 
-  fetch("/anglish_to_english.json").then((a) => {
+  fetch(anglishToEnglishPath).then((a) => {
     a.json().then((data: AnglishToEnglish) => {
       anglishToEnglishDictionary.value = data;
       console.log("Loaded AnglishToEnglish dictionary!");
@@ -46,7 +53,7 @@ export const useAppStore = defineStore("app", () => {
     }
   });
 
-  fetch("/english_to_anglish.json").then((a) => {
+  fetch(englishToAnglishPath).then((a) => {
     a.json().then((data: EnglishToAnglish) => {
       englishToAnglishDictionary.value = data;
       console.log("Loaded EnglishToAnglish dictionary!");
