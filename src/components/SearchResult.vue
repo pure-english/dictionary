@@ -154,22 +154,32 @@
   !(searchedWord in anglishToEnglishDictionary) &&
   'changeMeToOppositeOfOtherResults'">
     <h2><center>No results found!</center></h2>
-    <p>
-      <center>
-        We're sorry, but '{{ searchedWord }}' could not be found.
-        <br/><br/>
-        Try to search using only a lemma/the dictionary form of words.
-        <br/><br/>
-        E.g. instead of "bears", try "bear".
-        Instead of "broke" try "break".
-        <br/><br/>
-        Keep in mind regional spelling differences. The Wordbook uses the
-        <a href="https://en.wikipedia.org/wiki/Oxford_spelling">
-          Oxford spelling variant of British English</a>. That means using -our words
-        like armour and flavour, along with -ize endings like realize and
-        utilize (but not -yse endings like analyse).
-      </center>
-    </p>
+
+    <center>
+      <div id="not-found">
+        <p>We're sorry, but '{{ searchedWord }}' could not be found.</p>
+
+        <p>Try to search using only a lemma/the dictionary form of words.</p>
+
+        <p>
+          E.g. instead of "bears", try "bear".
+          Instead of "broke" try "break".
+        </p>
+
+        <p>
+          Keep in mind regional spelling differences. The Wordbook uses the
+          <a href="https://en.wikipedia.org/wiki/Oxford_spelling">
+            Oxford spelling variant of British English</a>. That means using -our
+            words like armour and flavour, along with -ize endings like realize
+            and utilize (but not -yse endings like analyse).
+        </p>
+
+        <p>
+          Also, check if your capitalization is correct. Most words are lower
+          case, but some words—such as Proper Nouns—use capital letters.
+        </p>
+      </div>
+    </center>
   </div>
 </template>
 
@@ -273,5 +283,9 @@ p {
 
 h2 {
   padding-bottom: 8px;
+}
+
+div#not-found>p {
+  padding-bottom: 16px;
 }
 </style>
