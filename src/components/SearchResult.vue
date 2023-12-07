@@ -175,7 +175,7 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
-import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord } from "@/types";
+import { AnglishToEnglish  } from "@/types";
 import { storeToRefs } from "pinia";
 import { onMounted, onUpdated } from "vue";
 import { Ref, computed, ref } from "vue";

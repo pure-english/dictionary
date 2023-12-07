@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { AnglishToEnglish, AnglishToEnglishEntry, EnglishToAnglish } from '@/types'
+import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord, EnglishToAnglish } from '@/types'
 import { Ref, ref } from 'vue';
 
 
@@ -70,9 +70,15 @@ export const useAppStore = defineStore("app", () => {
     notes: "",
   }
 
+  // eslint-disable-next-line prefer-const
+  let foundWord: Ref<AnglishWord> = ref({
+    "POS": [],
+  });
+
   return {
     anglishToEnglishDictionary,
     englishToAnglishDictionary,
     emptyAnglishToEnglishEntry,
+    foundWord,
   }
 });
