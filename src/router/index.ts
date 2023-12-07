@@ -37,8 +37,8 @@ const routes = [
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: () => import('@/layouts/default/Default.vue'),
-  }
+    component: () => import("@/views/NotFound.vue"),
+  },
 ]
 
 const router = createRouter({
