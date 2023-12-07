@@ -33,11 +33,11 @@
             <div v-if="$route.params.word.toString() in anglishToEnglishDictionary">
               <h3><u><center>Anglish</center></u></h3>
 
-              {{ console.log(`Found word: ${foundWord}`) }}
+              <!-- {{ console.log(`Found word: ${foundWord}`) }} -->
 
               <div v-for="(definitions, pos) in foundWord" :key="pos">
-                {{ console.log(`definitions: ${definitions}`) }}
-                {{ console.log(`pos: ${pos}`) }}
+                <!-- {{ console.log(`definitions: ${definitions}`) }} -->
+                <!-- {{ console.log(`pos: ${pos}`) }} -->
                 <h4><u>{{ pos }}</u></h4>
 
                 <ol>
@@ -102,13 +102,6 @@ const route = useRoute();
 const store = useAppStore();
 const { anglishToEnglishDictionary, foundWord } = storeToRefs(store);
 
-while (!foundWord) {
-  console.log("te");
-  await new Promise(r => setTimeout(r, 2000));
-}
-
-
-
 // If the dictionary isn't loaded
 if ("NOT_LOADED" in anglishToEnglishDictionary.value) {
   const anglishToEnglishPath = process.env.NODE_ENV === 'production'
@@ -120,6 +113,7 @@ if ("NOT_LOADED" in anglishToEnglishDictionary.value) {
       anglishToEnglishDictionary.value = data;
       console.log("Dictionary loaded only now!");
       foundWord.value = anglishToEnglishDictionary.value[route.params.word.toString()];
+      // console.log(`foundWord = ${JSON.stringify(foundWord.value)}`);
     })
   });
 } else {
@@ -129,100 +123,8 @@ if ("NOT_LOADED" in anglishToEnglishDictionary.value) {
 
 // console.log(`foundWord = ${foundWord.value}\n${JSON.stringify(foundWord.value)}`);
 
-// This will potentially force an update
+// // This will potentially force an update
 // JSON.stringify(foundWord.value);
-</script>
-
-<script lang="ts">
-// export default {
-//   computed: {
-//     ...mapStores(useAppStore),
-//     ...mapState(useAppStore, ["anglishToEnglishDictionary", "foundWord"]),
-//   },
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // beforeRouteEnter(to, __from, next) {
-  //   // next(vm => {
-
-  //   // });
-
-  //   // const route = useRoute();
-  //   // const route = getRoute();
-  //   const store = useAppStore();
-  //   const { anglishToEnglishDictionary, foundWord } = storeToRefs(store);
-  //   // console.log(route);
-
-  //   // console.log(`anglishToEnglish = ${anglishToEnglishDictionary.value}\n\n${JSON.stringify(anglishToEnglishDictionary.value)}`);
-  //   // console.log(`atedvalue = ${anglishToEnglishDictionary.value}`)
-
-  //   while (!anglishToEnglishDictionary.value) {
-  //     console.log("te")
-  //   }
-
-  //   // If the dictionary isn't loaded
-  //   if (anglishToEnglishDictionary.value["NOT_LOADED"]) {
-  //     const anglishToEnglishPath = process.env.NODE_ENV === 'production'
-  //       ? "/dictionary/anglish_to_english.json"
-  //       : "/anglish_to_english.json";
-
-  //     fetch(anglishToEnglishPath).then((a) => {
-  //       a.json().then((data: AnglishToEnglish) => {
-  //         anglishToEnglishDictionary.value = data;
-  //         // console.log("Loaded AnglishToEnglish dictionary!");
-  //       })
-  //     });
-
-  //     console.log("Dictionary loaded only now!");
-  //     foundWord.value = anglishToEnglishDictionary.value[to.params.word.toString()];
-  //   } else {
-  //     console.log("Dictionary already loaded!")
-  //     foundWord.value = anglishToEnglishDictionary.value[to.params.word.toString()];
-  //   }
-
-  //   console.log(`foundWord = ${foundWord.value}\n${JSON.stringify(foundWord.value)}`);
-
-  //   // This will potentially force an update
-  //   JSON.stringify(foundWord.value);
-  // },
-
-  // beforeRouteUpdate(to, from) {
-  //   const store = useAppStore();
-  //   const { anglishToEnglishDictionary, foundWord } = storeToRefs(store);
-  //   // console.log(route);
-
-  //   // console.log(`anglishToEnglish = ${anglishToEnglishDictionary.value}\n\n${JSON.stringify(anglishToEnglishDictionary.value)}`);
-  //   // console.log(`atedvalue = ${anglishToEnglishDictionary.value}`)
-
-  //   while (!anglishToEnglishDictionary.value) {
-  //     console.log("te")
-  //   }
-
-  //   // If the dictionary isn't loaded
-  //   if (anglishToEnglishDictionary.value["NOT_LOADED"]) {
-  //     const anglishToEnglishPath = process.env.NODE_ENV === 'production'
-  //       ? "/dictionary/anglish_to_english.json"
-  //       : "/anglish_to_english.json";
-
-  //     fetch(anglishToEnglishPath).then((a) => {
-  //       a.json().then((data: AnglishToEnglish) => {
-  //         anglishToEnglishDictionary.value = data;
-  //         // console.log("Loaded AnglishToEnglish dictionary!");
-  //       })
-  //     });
-
-  //     console.log("Dictionary loaded only now!");
-  //     foundWord.value = anglishToEnglishDictionary.value[to.params.word.toString()];
-  //   } else {
-  //     console.log("Dictionary already loaded!")
-  //     foundWord.value = anglishToEnglishDictionary.value[to.params.word.toString()];
-  //   }
-
-  //   console.log(`foundWord = ${foundWord.value}\n${JSON.stringify(foundWord.value)}`);
-
-  //   // This will potentially force an update
-  //   JSON.stringify(foundWord.value);
-  // },
-// }
 </script>
 
 <style scoped>
