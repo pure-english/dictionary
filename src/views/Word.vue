@@ -38,7 +38,7 @@
 
                 <ol>
                     <li v-for="(definition, index) in definitions" :key="index">
-                      <p>{{ definition.definitions }}</p>
+                      <p><span v-html="definition.definitions"></span></p>
 
                       <p>
                         <b>Spelling:</b> {{ definition.word }}
