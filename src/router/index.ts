@@ -32,6 +32,13 @@ const routes = [
   //   component: import('@/views/Word.vue'),
 
   // }
+
+  // Catch-all 404 route
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import('@/layouts/default/Default.vue'),
+  }
 ]
 
 const router = createRouter({
