@@ -1,4 +1,4 @@
-# essentials
+# Pure English Dictionary
 
 ## Project setup
 
