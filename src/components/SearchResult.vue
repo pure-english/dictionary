@@ -104,11 +104,11 @@
       <hr/><br/>
       <!-- <span>{{ console.log(`definitions: ${JSON.stringify(definitions)}\nword: ${word}`) }}</span> -->
       <div
-        v-for="([_pos, entries], index) in Object.entries(definitions)"
+        v-for="([_, entries], index) in Object.entries(definitions)"
         :key="index"
         class="mb-5"
       >
-       {{ console.log(`index = ${index}`) }}
+       <!-- {{ console.log(`index = ${{ pos }}`) }} -->
        <v-card>
         <v-card-item>
           <v-card-title>

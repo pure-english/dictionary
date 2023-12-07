@@ -1,0 +1,54 @@
+name: Build Vue
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  actions: write
+  pages: write
+  contents: write
+  id-token: write
+
+jobs:
+  build_vue:
+    # runs-on: ubuntu-latest
+    # name: Build Vue
+    # steps:
+    # - uses: actions/checkout@v2
+    # - id: Build-Vue
+    #   uses: xRealNeon/VuePagesAction@1.0.1
+    #   with:
+    #     username: "pure-english"
+    #     reponame: "name-generator"
+    #     token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install
+      - name: Build
+        run: yarn build
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Move items to dist
+        run: cp anglish_given_names.json ./dist/
+      # - name: Build CSS
+      #   run: npx tailwindcss -i ./src/input.css -o ./dist/output.css
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload dist repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
