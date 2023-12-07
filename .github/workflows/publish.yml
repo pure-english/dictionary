@@ -44,6 +44,8 @@ jobs:
         run: |
           cp anglish_to_english.json ./dist/
           cp english_to_anglish.json ./dist/
+          cp 404.html ./dist/
+          cp index.html ./dist/
       # - name: Build CSS
       #   run: npx tailwindcss -i ./src/input.css -o ./dist/output.css
       - name: Upload artifact
