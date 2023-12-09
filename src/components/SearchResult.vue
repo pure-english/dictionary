@@ -108,7 +108,7 @@
 
         <v-card-text>
           <p>
-            <b>Definitions:</b> {{ word.definitions }}
+            <b>Definitions:</b> <span v-html="word.definitions"></span>
           </p>
 
           <p>
@@ -307,6 +307,10 @@ function refreshSearch() {
       */
       for (const subDefinition of definition) {
         if (subDefinition.is_anglish) {
+          continue;
+        }
+
+        if (searchedWord.value.trim() === "") {
           continue;
         }
 
