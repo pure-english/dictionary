@@ -203,7 +203,7 @@
     <!-- Germanic-like words from GT -->
   </div>
 
-  <div v-if="!germanicEnglishWord &&
+  <div v-if="!(searchedWord in englishToGermanicDictionary) &&
   !(searchedWord in englishToAnglishDictionary) &&
   !(searchedWord in anglishToEnglishDictionary) &&
   Object.keys(anglishFuzzyResults).length < 1">
@@ -263,10 +263,6 @@ const {
 
 const searchedWord = computed(() => {
   return route.query.word?.toString() ?? '';
-});
-
-const germanicEnglishWord = computed(() => {
-  return searchedWord.value in englishToGermanicDictionary;
 });
 
 const emptyAnglishFuzzyResults: AnglishToEnglish = {
