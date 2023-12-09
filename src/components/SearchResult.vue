@@ -11,7 +11,7 @@
       :key="pos"
     >
       <h3 class="mb-5"><center>{{ pos }}</center></h3>
-      <v-card v-for="(word, index) in words" :key="index">
+      <v-card v-for="(word, index) in words" :key="index" class="mb-5">
         <v-card-item>
           <v-card-title>
             {{ searchedWord }}
@@ -123,7 +123,11 @@
     </div>
   </div>
 
-  <div v-if="anglishFuzzyResults && !('IGNORE_ME' in anglishFuzzyResults)">
+  <div
+    v-if="anglishFuzzyResults &&
+    !('IGNORE_ME' in anglishFuzzyResults) &&
+    Object.keys(anglishFuzzyResults).length > 0"
+  >
     <h2><u><center>Other Results</center></u></h2>
     <!-- Fuzzy search of Germanic Thesaurus -->
 
@@ -144,11 +148,11 @@
       <!-- <span>{{ console.log(`definitions: ${JSON.stringify(definitions)}\nword: ${word}`) }}</span> -->
       <div
         v-for="([_, entries], index) in Object.entries(definitions)"
-        :key="index"
+        :key="entriesIndex(entries, index)"
         class="mb-5"
       >
        <!-- {{ console.log(`index = ${{ pos }}`) }} -->
-       <v-card>
+       <v-card v-if="entries.length >= 1 && entries[index ?? 0]">
         <v-card-item>
           <v-card-title>
             <router-link :to="`/word/${entries[index ?? 0].word}`">
@@ -194,6 +198,7 @@
   !(searchedWord in englishToAnglishDictionary) &&
   !(searchedWord in anglishToEnglishDictionary) &&
   !anglishFuzzyResults">
+  <!-- <div v-else> -->
     <h2><center>No results found!</center></h2>
 
     <center>
@@ -226,9 +231,9 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
-import { AnglishToEnglish  } from "@/types";
+import { AnglishToEnglish, AnglishToEnglishEntry  } from "@/types";
 import { storeToRefs } from "pinia";
-import { onMounted, onUpdated } from "vue";
+import { onMounted, watch } from "vue";
 import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -262,10 +267,12 @@ const emptyAnglishFuzzyResults: AnglishToEnglish = {
     }]
   }
 };
-const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(emptyAnglishFuzzyResults);
+const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(structuredClone(emptyAnglishFuzzyResults));
 
 function refreshSearch() {
-  anglishFuzzyResults.value = emptyAnglishFuzzyResults;
+  console.log("Refreshing search!");
+
+  anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
 
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
@@ -309,22 +316,31 @@ function refreshSearch() {
   // console.log(`anglishFuzzyResults =\n${JSON.stringify(anglishFuzzyResults.value)}`);
 }
 
-refreshSearch();
+// refreshSearch();
 
 onMounted(() => {
+  console.log("Mounted!");
   refreshSearch();
 });
 
-onUpdated(() => {
-  refreshSearch();
-});
+// onUpdated(() => {
+//   refreshSearch();
+// });
 
 const route = useRoute();
 
-computed(() => {
-  console.log(`route changed to ${route.path}!`);
-  return 0;
+watch(route, (_to, _from) => {
+  console.log("Route changed!")
+  refreshSearch();
 });
+
+function entriesIndex(entries: AnglishToEnglishEntry[], index: number) {
+  if (entries.length > index) {
+    return entries[index ?? 0];
+  } else {
+    return index;
+  }
+}
 </script>
 
 <style scoped>

@@ -1,7 +1,12 @@
 <template>
   <v-app-bar flat>
     <v-app-bar-title>
-      Online Anglish Dictionary
+      <a
+        href="/dictionary/"
+        class="hidden-link"
+      >
+        Online Anglish Dictionary
+      </a>
     </v-app-bar-title>
 
     <v-responsive max-width="320">
@@ -37,3 +42,9 @@ function searchWord() {
   router.push({ path: "/search", query: { word: searchBarValue.value } });
 }
 </script>
+
+<style scoped>
+hidden-link a {
+  color: inherit;
+}
+</style>

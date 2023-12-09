@@ -5,7 +5,7 @@
 - [ ] Fix duplicates of search due to second Anglish spellings
 - [ ] Fix duplicated search results due to search not clearing on update
 - [ ] Fix mark tags not working on Anglish word definitions (I think)
-- [ ] Fix "No results found" showing up even when results are found via fuzzy
+- [x] Fix "No results found" showing up even when results are found via fuzzy
   search
 
 ## Project setup
