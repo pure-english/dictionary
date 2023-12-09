@@ -132,10 +132,11 @@
     <!-- Fuzzy search of Germanic Thesaurus -->
 
     <!-- Fuzzy search of Anglish Wordbook -->
+    <!-- {{ anglishFuzzyResults }}
     <div
-      v-for="(definitions, word) in anglishFuzzyResults"
-      :key="word"
-    >
+      v-for="(word, index) in anglishFuzzyResults"
+      :key="index"
+    > -->
       <!--
         definitions:
         {"Noun":[{"word":"handglass","anglish_spelling":"","definitions":"a
@@ -144,20 +145,19 @@
         word: handglass
        -->
       <!-- <h3 class="mb-5"><center>{{ word }}</center></h3> -->
-      <hr/><br/>
+
       <!-- <span>{{ console.log(`definitions: ${JSON.stringify(definitions)}\nword: ${word}`) }}</span> -->
-      <div
+      <!-- <div
         v-for="([pos, entries], index) in Object.entries(definitions)"
         :key="entriesIndex(entries, index)"
         class="mb-5"
-      >
+      > -->
        <!-- {{ console.log(`index = ${{ pos }}`) }} -->
         <!-- <div
           v-if="entries.length >= 1 && entries[index ?? 0]"
         > -->
-        <div>
           <v-card
-            v-for="(entry, index) in entries"
+            v-for="(entry, index) in anglishFuzzyResults"
             :key="index"
           >
             <v-card-item>
@@ -179,7 +179,7 @@
             <v-card-text style="padding-bottom: 10px !important;">
               <div>
                 <p>
-                  <i>{{ pos }}</i>
+                  <i>{{ entry.pos }}</i>
                 </p>
 
                 <p>
@@ -196,12 +196,14 @@
               </div>
             </v-card-text>
           </v-card>
+
+          <hr/><br/>
         </div>
-      </div>
-    </div>
+      <!-- </div> -->
+    <!-- </div> -->
 
     <!-- Germanic-like words from GT -->
-  </div>
+  <!-- </div> -->
 
   <div v-if="!(searchedWord in englishToGermanicDictionary) &&
   !(searchedWord in englishToAnglishDictionary) &&
@@ -240,7 +242,7 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
-import { AnglishToEnglish, AnglishToEnglishEntry  } from "@/types";
+import { AnglishToEnglish, AnglishToEnglishEntry, EnglishWord  } from "@/types";
 import { storeToRefs } from "pinia";
 import { onMounted, watch } from "vue";
 import { getCurrentInstance } from "vue";
@@ -264,25 +266,26 @@ const searchedWord = computed(() => {
   return route.query.word?.toString() ?? '';
 });
 
-const emptyAnglishFuzzyResults: AnglishToEnglish = {
-  "IGNORE_ME": {
-    "POS": [{
-      word: "",
-      anglish_spelling: "",
-      definitions: "",
-      pos: "",
-      forebear: "",
-      taken_from: "",
-      notes: "",
-      is_anglish: false,
-    }]
-  }
-};
-const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(structuredClone(emptyAnglishFuzzyResults));
+// const oldEmptyAnglishFuzzyResults: AnglishToEnglish = {
+//   "IGNORE_ME": {
+//     "POS": [{
+//       word: "",
+//       anglish_spelling: "",
+//       definitions: "",
+//       pos: "",
+//       forebear: "",
+//       taken_from: "",
+//       notes: "",
+//       is_anglish: false,
+//     }]
+//   }
+// };
+const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
+const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref(structuredClone(emptyAnglishFuzzyResults));
 
 async function refreshSearch() {
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
-  delete anglishFuzzyResults.value["IGNORE_ME"];
+  // delete anglishFuzzyResults.value["IGNORE_ME"];
 
   while ("NOT_LOADED" in anglishToEnglishDictionary.value) {
     console.log("Waiting for ATE dict to load…");
@@ -291,6 +294,8 @@ async function refreshSearch() {
 
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
+
+    let new_definitions: AnglishToEnglishEntry[] = [];
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_pos, definition] of Object.entries(definitions)) {
@@ -322,12 +327,14 @@ async function refreshSearch() {
           )
 
           foundMatch = true;
+
+          new_definitions.push(subDefinition);
         }
       }
     }
 
     if (foundMatch) {
-      anglishFuzzyResults.value[word] = definitions;
+      anglishFuzzyResults.value = anglishFuzzyResults.value.concat(new_definitions);
     }
   }
 }

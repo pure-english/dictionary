@@ -15,6 +15,8 @@
 - [x] `<mark>` tags overwhelm some definitions due to persistent definitions.
     * Mark tags spam between each letter with nothing inbetween.
 - [x] Fix no "No result" message
+- [ ] In the "Other Results" section, only include the meanings of words with a
+  relevant definition, instead of every single definition
 
 ## Project setup
 
