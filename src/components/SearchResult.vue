@@ -242,6 +242,7 @@
 import { useAppStore } from "@/store/app";
 import { AnglishToEnglish, AnglishToEnglishEntry  } from "@/types";
 import { storeToRefs } from "pinia";
+import { nextTick } from "vue";
 import { onMounted, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
@@ -284,9 +285,15 @@ const emptyAnglishFuzzyResults: AnglishToEnglish = {
 };
 const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(structuredClone(emptyAnglishFuzzyResults));
 
-function refreshSearch() {
+async function refreshSearch() {
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
   delete anglishFuzzyResults.value["IGNORE_ME"];
+
+  while ("NOT_LOADED" in anglishToEnglishDictionary.value) {
+    console.log("Waiting for ATE dict to load…");
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+  }
 
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
