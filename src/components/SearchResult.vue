@@ -287,7 +287,6 @@ async function refreshSearch() {
   while ("NOT_LOADED" in anglishToEnglishDictionary.value) {
     console.log("Waiting for ATE dict to load…");
     await new Promise(resolve => setTimeout(resolve, 300));
-
   }
 
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
