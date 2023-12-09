@@ -7,7 +7,6 @@
       >
         Online Anglish Dictionary
       </a>
-      <sub style="margin-left: 12px;">v1.0.1 (2023-12-09)</sub>
     </v-app-bar-title>
 
     <v-responsive max-width="320">
