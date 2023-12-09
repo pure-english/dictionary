@@ -242,7 +242,6 @@
 import { useAppStore } from "@/store/app";
 import { AnglishToEnglish, AnglishToEnglishEntry  } from "@/types";
 import { storeToRefs } from "pinia";
-import { nextTick } from "vue";
 import { onMounted, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
@@ -294,6 +293,7 @@ async function refreshSearch() {
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_pos, definition] of Object.entries(definitions)) {
       // console.log(`pos: ${pos}; def: ${JSON.stringify(definition)}`)
       // pos: Proper Noun; def:
