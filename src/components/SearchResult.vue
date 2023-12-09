@@ -132,75 +132,51 @@
     <!-- Fuzzy search of Germanic Thesaurus -->
 
     <!-- Fuzzy search of Anglish Wordbook -->
-    <!-- {{ anglishFuzzyResults }}
     <div
-      v-for="(word, index) in anglishFuzzyResults"
+      v-for="(entry, index) in anglishFuzzyResults"
       :key="index"
-    > -->
-      <!--
-        definitions:
-        {"Noun":[{"word":"handglass","anglish_spelling":"","definitions":"a
-        magnifying <mark>glass</mark>, a hand
-        mirror","pos":"Noun","forebear":"hand-glass","taken_from":"NE","notes":"[OED]"}]}
-        word: handglass
-       -->
-      <!-- <h3 class="mb-5"><center>{{ word }}</center></h3> -->
+    >
+    <v-card>
+        <v-card-item>
+          <v-card-title>
+            <router-link :to="`/word/${entry.word}`">
+              {{ entry.word }}
+              <span
+                v-if="entry.word != entry.anglish_spelling &&
+                entry.anglish_spelling"
+              >
+                ({{ entry.anglish_spelling }})
+              </span>
+            </router-link>
+          </v-card-title>
 
-      <!-- <span>{{ console.log(`definitions: ${JSON.stringify(definitions)}\nword: ${word}`) }}</span> -->
-      <!-- <div
-        v-for="([pos, entries], index) in Object.entries(definitions)"
-        :key="entriesIndex(entries, index)"
-        class="mb-5"
-      > -->
-       <!-- {{ console.log(`index = ${{ pos }}`) }} -->
-        <!-- <div
-          v-if="entries.length >= 1 && entries[index ?? 0]"
-        > -->
-          <v-card
-            v-for="(entry, index) in anglishFuzzyResults"
-            :key="index"
-          >
-            <v-card-item>
-              <v-card-title>
-                <router-link :to="`/word/${entry.word}`">
-                  {{ entry.word }}
-                  <span
-                    v-if="entry.word != entry.anglish_spelling &&
-                    entry.anglish_spelling"
-                  >
-                    ({{ entry.anglish_spelling }})
-                  </span>
-                </router-link>
-              </v-card-title>
+          <v-card-subtitle>{{ entry.taken_from }}</v-card-subtitle>
+        </v-card-item>
 
-              <v-card-subtitle>{{ entry.taken_from }}</v-card-subtitle>
-            </v-card-item>
+        <v-card-text style="padding-bottom: 10px !important;">
+          <div>
+            <p>
+              <i>{{ entry.pos }}</i>
+            </p>
 
-            <v-card-text style="padding-bottom: 10px !important;">
-              <div>
-                <p>
-                  <i>{{ entry.pos }}</i>
-                </p>
+            <p>
+              <b>Definitions:</b> <span v-html="entry.definitions"></span>
+            </p>
 
-                <p>
-                  <b>Definitions:</b> <span v-html="entry.definitions"></span>
-                </p>
+            <p>
+              <b>Forebear:</b> {{ entry.forebear }}
+            </p>
 
-                <p>
-                  <b>Forebear:</b> {{ entry.forebear }}
-                </p>
+            <p v-if="entry.notes">
+              <b>Notes:</b> {{ entry.notes }}
+            </p>
+          </div>
+        </v-card-text>
+      </v-card>
 
-                <p v-if="entry.notes">
-                  <b>Notes:</b> {{ entry.notes }}
-                </p>
-              </div>
-            </v-card-text>
-          </v-card>
-
-          <hr/><br/>
-        </div>
-      <!-- </div> -->
-    <!-- </div> -->
+      <br/>
+    </div>
+  </div>
 
     <!-- Germanic-like words from GT -->
   <!-- </div> -->
@@ -242,7 +218,7 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
-import { AnglishToEnglish, AnglishToEnglishEntry, EnglishWord  } from "@/types";
+import { AnglishToEnglishEntry  } from "@/types";
 import { storeToRefs } from "pinia";
 import { onMounted, watch } from "vue";
 import { getCurrentInstance } from "vue";
@@ -292,7 +268,8 @@ async function refreshSearch() {
     await new Promise(resolve => setTimeout(resolve, 300));
   }
 
-  for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const [_word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
 
     let new_definitions: AnglishToEnglishEntry[] = [];
@@ -359,14 +336,6 @@ watch(route, (_to, _from) => {
   instance?.proxy?.$forceUpdate();
   // console.log(`after dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
 });
-
-function entriesIndex(entries: AnglishToEnglishEntry[], index: number) {
-  if (entries.length > index) {
-    return entries[index ?? 0].word;
-  } else {
-    return index.toString();
-  }
-}
 </script>
 
 <style scoped>
