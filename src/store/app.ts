@@ -24,6 +24,7 @@ export const useAppStore = defineStore("app", () => {
         forebear: "",
         taken_from: "",
         notes: "",
+        is_anglish: false,
       }]
     }
   });
@@ -63,6 +64,7 @@ export const useAppStore = defineStore("app", () => {
     forebear: "",
     taken_from: "",
     notes: "",
+    is_anglish: false,
   }
 
   // eslint-disable-next-line prefer-const

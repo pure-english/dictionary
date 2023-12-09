@@ -31,6 +31,7 @@ export interface AnglishToEnglishEntry {
   forebear: string,
   taken_from: string,
   notes: string,
+  is_anglish: boolean,
 }
 
 export interface AnglishWord {

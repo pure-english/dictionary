@@ -147,47 +147,56 @@
       <hr/><br/>
       <!-- <span>{{ console.log(`definitions: ${JSON.stringify(definitions)}\nword: ${word}`) }}</span> -->
       <div
-        v-for="([_, entries], index) in Object.entries(definitions)"
+        v-for="([pos, entries], index) in Object.entries(definitions)"
         :key="entriesIndex(entries, index)"
         class="mb-5"
       >
        <!-- {{ console.log(`index = ${{ pos }}`) }} -->
-       <v-card v-if="entries.length >= 1 && entries[index ?? 0]">
-        <v-card-item>
-          <v-card-title>
-            <router-link :to="`/word/${entries[index ?? 0].word}`">
-              {{ entries[index].word }}
-              <span
-                v-if="entries[index].word != entries[index].anglish_spelling &&
-                entries[index].anglish_spelling"
-              >
-                ({{ entries[index].anglish_spelling }})
-              </span>
-            </router-link>
-          </v-card-title>
-
-          <v-card-subtitle>{{ entries[index].taken_from }}</v-card-subtitle>
-        </v-card-item>
-
-        <v-card-text>
-          <div
+        <!-- <div
+          v-if="entries.length >= 1 && entries[index ?? 0]"
+        > -->
+        <div>
+          <v-card
             v-for="(entry, index) in entries"
             :key="index"
           >
-            <p>
-              <b>Definitions:</b> <span v-html="entry.definitions"></span>
-            </p>
+            <v-card-item>
+              <v-card-title>
+                <router-link :to="`/word/${entry.word}`">
+                  {{ entry.word }}
+                  <span
+                    v-if="entry.word != entry.anglish_spelling &&
+                    entry.anglish_spelling"
+                  >
+                    ({{ entry.anglish_spelling }})
+                  </span>
+                </router-link>
+              </v-card-title>
 
-            <p>
-              <b>Forebear:</b> {{ entry.forebear }}
-            </p>
+              <v-card-subtitle>{{ entry.taken_from }}</v-card-subtitle>
+            </v-card-item>
 
-            <p v-if="entry.notes">
-              <b>Notes:</b> {{ entry.notes }}
-            </p>
-          </div>
-        </v-card-text>
-       </v-card>
+            <v-card-text style="padding-bottom: 10px !important;">
+              <div>
+                <p>
+                  <i>{{ pos }}</i>
+                </p>
+
+                <p>
+                  <b>Definitions:</b> <span v-html="entry.definitions"></span>
+                </p>
+
+                <p>
+                  <b>Forebear:</b> {{ entry.forebear }}
+                </p>
+
+                <p v-if="entry.notes">
+                  <b>Notes:</b> {{ entry.notes }}
+                </p>
+              </div>
+            </v-card-text>
+          </v-card>
+        </div>
       </div>
     </div>
 
@@ -269,16 +278,13 @@ const emptyAnglishFuzzyResults: AnglishToEnglish = {
       forebear: "",
       taken_from: "",
       notes: "",
+      is_anglish: false,
     }]
   }
 };
 const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(structuredClone(emptyAnglishFuzzyResults));
 
 function refreshSearch() {
-  console.log("Refreshing search!");
-  console.log(`Searched word is: "${searchedWord.value}"`);
-  console.log(`route.query = ${route.query.word}`);
-
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
   delete anglishFuzzyResults.value["IGNORE_ME"];
 
@@ -300,6 +306,10 @@ function refreshSearch() {
       }]
       */
       for (const subDefinition of definition) {
+        if (subDefinition.is_anglish) {
+          continue;
+        }
+
         if (subDefinition.definitions.includes(searchedWord.value)) {
           subDefinition.definitions = subDefinition.definitions.replaceAll(
             searchedWord.value, `<mark>${searchedWord.value}</mark>`
@@ -328,12 +338,13 @@ onMounted(() => {
 const route = useRoute();
 const instance = getCurrentInstance();
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(route, (_to, _from) => {
-  console.log("Route changed!");
-  console.log(`before dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
+  // console.log("Route changed!");
+  // console.log(`before dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
   refreshSearch();
   instance?.proxy?.$forceUpdate();
-  console.log(`after dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
+  // console.log(`after dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
 });
 
 function entriesIndex(entries: AnglishToEnglishEntry[], index: number) {
