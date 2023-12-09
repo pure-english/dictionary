@@ -41,6 +41,18 @@ export interface AnglishToEnglish {
   [word: string]: AnglishWord,
 }
 
+export interface GermanicEntry {
+  [pos: string]: {
+    "alternatives": string,
+    "germanic_like_alternatives": string,
+    "details": string,
+  }
+}
+
+export interface GermanicDictionary {
+  [word: string]: GermanicEntry,
+}
+
 /**
  * {
  *  "a": {

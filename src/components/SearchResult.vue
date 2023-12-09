@@ -1,6 +1,41 @@
+<!-- eslint-disable vue/no-unused-vars -->
 <template>
-  <div v-if="germanicEnglishWord">
+  <div
+    v-if="searchedWord in englishToGermanicDictionary"
+    class="mb-8"
+  >
     <h2><u><center>Germanic English Alternatives</center></u></h2>
+
+    <div
+      v-for="(word, pos) in englishToGermanicDictionary[searchedWord]"
+      :key="pos"
+    >
+      <h3 class="mb-5"><center>{{ pos }}</center></h3>
+      <v-card>
+        <v-card-item>
+          <v-card-title>
+            {{ searchedWord }}
+          </v-card-title>
+        </v-card-item>
+
+        <v-card-text>
+          <p v-if="word.alternatives">
+            <b>Alternatives:</b> {{ word.alternatives }}
+          </p>
+
+          <p v-if="word.germanic_like_alternatives">
+            <b>Germanic-like Alternatives:</b>
+            {{ word.germanic_like_alternatives }}
+          </p>
+
+          <p v-if="word.details">
+            <b>Details:</b>
+          </p>
+
+          <p v-if="word.details">{{ word.details }}</p>
+        </v-card-text>
+      </v-card>
+    </div>
   </div>
 
   <div v-if="searchedWord in englishToAnglishDictionary">
@@ -195,15 +230,18 @@ const store = useAppStore();
 const {
   anglishToEnglishDictionary,
   englishToAnglishDictionary,
+  englishToGermanicDictionary,
 } = storeToRefs(store);
 
+const germanicEnglishWord = ref(false);
+
 const props = defineProps<{
-  germanicEnglishWord?: false,
+  // germanicEnglishWord?: false,
   // anglishEnglishWord: EnglishWord,
   searchedWord: string,
 }>();
 
-const anglishFuzzyResults: Ref<AnglishToEnglish> = ref({
+const emptyAnglishFuzzyResults: AnglishToEnglish = {
   "IGNORE_ME": {
     "POS": [{
       word: "",
@@ -215,9 +253,12 @@ const anglishFuzzyResults: Ref<AnglishToEnglish> = ref({
       notes: "",
     }]
   }
-});
+};
+const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(emptyAnglishFuzzyResults);
 
 function refreshSearch() {
+  anglishFuzzyResults.value = emptyAnglishFuzzyResults;
+
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
 

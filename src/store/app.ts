@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord, EnglishToAnglish } from '@/types'
+import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord, EnglishToAnglish, GermanicDictionary, GermanicEntry } from '@/types'
 import { Ref, ref } from 'vue';
 
 
@@ -18,6 +18,9 @@ export const useAppStore = defineStore("app", () => {
   const englishToAnglishPath = process.env.NODE_ENV === 'production'
     ? "/dictionary/english_to_anglish.json"
     : "/english_to_anglish.json";
+  const englishToGermanicPath = process.env.NODE_ENV === 'production'
+  ? "/dictionary/english_to_germanic.json"
+  : "/english_to_germanic.json";
 
   const anglishToEnglishDictionary: Ref<AnglishToEnglish> = ref({
     "NOT_LOADED": {
@@ -75,10 +78,28 @@ export const useAppStore = defineStore("app", () => {
     "POS": [],
   });
 
+  const englishToGermanicDictionary: Ref<GermanicDictionary> = ref({
+    "IGNOREME": {
+      "POS": {
+        alternatives: "",
+        germanic_like_alternatives: "",
+        details: "",
+      }
+    }
+  });
+
+  fetch(englishToGermanicPath).then((a) => {
+    a.json().then((data: GermanicDictionary) => {
+      englishToGermanicDictionary.value = data;
+      console.log("Loaded EnglishToGermanic dictionary!");
+    })
+  });
+
   return {
     anglishToEnglishDictionary,
     englishToAnglishDictionary,
     emptyAnglishToEnglishEntry,
+    englishToGermanicDictionary,
     foundWord,
   }
 });
