@@ -17,6 +17,7 @@
 - [x] Fix no "No result" message
 - [x] In the "Other Results" section, only include the meanings of words with a
   relevant definition, instead of every single definition
+- [x] Word definitions need right padding
 
 ## Project setup
 

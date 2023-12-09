@@ -25,6 +25,7 @@
           <v-sheet
             min-height="70vh"
             rounded="lg"
+            class="pr-6"
           >
             <h2>
               <center>Definitions for '{{ $route.params.word }}'</center>
