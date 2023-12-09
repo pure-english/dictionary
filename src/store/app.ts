@@ -3,14 +3,6 @@ import { defineStore } from 'pinia'
 import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord, EnglishToAnglish, GermanicDictionary, GermanicEntry } from '@/types'
 import { Ref, ref } from 'vue';
 
-
-
-// export const useAppStore = defineStore('app', {
-//   state: () => ({
-//     //
-//   }),
-// })
-
 export const useAppStore = defineStore("app", () => {
   const anglishToEnglishPath = process.env.NODE_ENV === 'production'
     ? "/dictionary/anglish_to_english.json"

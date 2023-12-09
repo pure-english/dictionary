@@ -42,15 +42,17 @@ export interface AnglishToEnglish {
 }
 
 export interface GermanicEntry {
-  [pos: string]: {
-    "alternatives": string,
-    "germanic_like_alternatives": string,
-    "details": string,
-  }
+  "alternatives": string,
+  "germanic_like_alternatives": string,
+  "details": string,
+}
+
+export interface GermanicEntries {
+  [pos: string]: GermanicEntry,
 }
 
 export interface GermanicDictionary {
-  [word: string]: GermanicEntry,
+  [word: string]: GermanicEntries,
 }
 
 /**

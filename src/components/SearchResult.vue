@@ -119,7 +119,7 @@
     </div>
   </div>
 
-  <div v-if="true">
+  <div v-if="emptyAnglishFuzzyResults && !('IGNORE_ME' in emptyAnglishFuzzyResults)">
     <h2><u><center>Other Results</center></u></h2>
     <!-- Fuzzy search of Germanic Thesaurus -->
 
@@ -187,7 +187,7 @@
   <div v-if="!germanicEnglishWord &&
   !(searchedWord in englishToAnglishDictionary) &&
   !(searchedWord in anglishToEnglishDictionary) &&
-  'changeMeToOppositeOfOtherResults'">
+  !emptyAnglishFuzzyResults">
     <h2><center>No results found!</center></h2>
 
     <center>
@@ -233,13 +233,15 @@ const {
   englishToGermanicDictionary,
 } = storeToRefs(store);
 
-const germanicEnglishWord = ref(false);
-
 const props = defineProps<{
   // germanicEnglishWord?: false,
   // anglishEnglishWord: EnglishWord,
   searchedWord: string,
 }>();
+
+const germanicEnglishWord = computed(() => {
+  return props.searchedWord in englishToGermanicDictionary;
+});
 
 const emptyAnglishFuzzyResults: AnglishToEnglish = {
   "IGNORE_ME": {
