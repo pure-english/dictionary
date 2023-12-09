@@ -123,7 +123,7 @@
     </div>
   </div>
 
-  <div v-if="emptyAnglishFuzzyResults && !('IGNORE_ME' in emptyAnglishFuzzyResults)">
+  <div v-if="anglishFuzzyResults && !('IGNORE_ME' in anglishFuzzyResults)">
     <h2><u><center>Other Results</center></u></h2>
     <!-- Fuzzy search of Germanic Thesaurus -->
 
@@ -153,8 +153,10 @@
           <v-card-title>
             <router-link :to="`/word/${entries[index ?? 0].word}`">
               {{ entries[index].word }}
-              <span v-if="entries[index].word != entries[index].anglish_spelling &&
-              entries[index].anglish_spelling">
+              <span
+                v-if="entries[index].word != entries[index].anglish_spelling &&
+                entries[index].anglish_spelling"
+              >
                 ({{ entries[index].anglish_spelling }})
               </span>
             </router-link>
@@ -191,7 +193,7 @@
   <div v-if="!germanicEnglishWord &&
   !(searchedWord in englishToAnglishDictionary) &&
   !(searchedWord in anglishToEnglishDictionary) &&
-  !emptyAnglishFuzzyResults">
+  !anglishFuzzyResults">
     <h2><center>No results found!</center></h2>
 
     <center>
@@ -306,6 +308,8 @@ function refreshSearch() {
 
   // console.log(`anglishFuzzyResults =\n${JSON.stringify(anglishFuzzyResults.value)}`);
 }
+
+refreshSearch();
 
 onMounted(() => {
   refreshSearch();
