@@ -48,7 +48,7 @@ export interface GermanicEntry {
 }
 
 export interface GermanicEntries {
-  [pos: string]: GermanicEntry,
+  [pos: string]: Array<GermanicEntry>,
 }
 
 export interface GermanicDictionary {

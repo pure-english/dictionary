@@ -7,11 +7,11 @@
     <h2><u><center>Germanic English Alternatives</center></u></h2>
 
     <div
-      v-for="(word, pos) in englishToGermanicDictionary[searchedWord]"
+      v-for="(words, pos) in englishToGermanicDictionary[searchedWord]"
       :key="pos"
     >
       <h3 class="mb-5"><center>{{ pos }}</center></h3>
-      <v-card>
+      <v-card v-for="(word, index) in words" :key="index">
         <v-card-item>
           <v-card-title>
             {{ searchedWord }}
@@ -19,20 +19,24 @@
         </v-card-item>
 
         <v-card-text>
-          <p v-if="word.alternatives">
-            <b>Alternatives:</b> {{ word.alternatives }}
-          </p>
+          <!-- {{ word }} -->
+
+          <div v-if="word.alternatives">
+            <p><b>Alternatives:</b></p>
+
+            <p>{{ word.alternatives }}</p>
+          </div>
 
           <p v-if="word.germanic_like_alternatives">
             <b>Germanic-like Alternatives:</b>
             {{ word.germanic_like_alternatives }}
           </p>
 
-          <p v-if="word.details">
-            <b>Details:</b>
-          </p>
+          <div v-if="word.details">
+            <p><b>Details:</b></p>
 
-          <p v-if="word.details">{{ word.details }}</p>
+            <p v-html="word.details"></p>
+          </div>
         </v-card-text>
       </v-card>
     </div>

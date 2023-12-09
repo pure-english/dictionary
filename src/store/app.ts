@@ -72,11 +72,7 @@ export const useAppStore = defineStore("app", () => {
 
   const englishToGermanicDictionary: Ref<GermanicDictionary> = ref({
     "IGNOREME": {
-      "POS": {
-        alternatives: "",
-        germanic_like_alternatives: "",
-        details: "",
-      }
+      "POS": []
     }
   });
 
