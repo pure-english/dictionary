@@ -206,7 +206,7 @@
   <div v-if="!germanicEnglishWord &&
   !(searchedWord in englishToAnglishDictionary) &&
   !(searchedWord in anglishToEnglishDictionary) &&
-  !anglishFuzzyResults">
+  Object.keys(anglishFuzzyResults).length < 1">
   <!-- <div v-else> -->
     <h2><center>No results found!</center></h2>
 

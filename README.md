@@ -14,6 +14,7 @@
   highlighting them
 - [x] `<mark>` tags overwhelm some definitions due to persistent definitions.
     * Mark tags spam between each letter with nothing inbetween.
+- [x] Fix no "No result" message
 
 ## Project setup
 
