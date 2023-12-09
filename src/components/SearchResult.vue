@@ -234,6 +234,7 @@ import { useAppStore } from "@/store/app";
 import { AnglishToEnglish, AnglishToEnglishEntry  } from "@/types";
 import { storeToRefs } from "pinia";
 import { onMounted, watch } from "vue";
+import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -244,14 +245,18 @@ const {
   englishToGermanicDictionary,
 } = storeToRefs(store);
 
-const props = defineProps<{
-  // germanicEnglishWord?: false,
-  // anglishEnglishWord: EnglishWord,
-  searchedWord: string,
-}>();
+// const props = defineProps<{
+//   // germanicEnglishWord?: false,
+//   // anglishEnglishWord: EnglishWord,
+//   searchedWord: string,
+// }>();
+
+const searchedWord = computed(() => {
+  return route.query.word?.toString() ?? '';
+});
 
 const germanicEnglishWord = computed(() => {
-  return props.searchedWord in englishToGermanicDictionary;
+  return searchedWord.value in englishToGermanicDictionary;
 });
 
 const emptyAnglishFuzzyResults: AnglishToEnglish = {
@@ -271,8 +276,11 @@ const anglishFuzzyResults: Ref<AnglishToEnglish> = ref(structuredClone(emptyAngl
 
 function refreshSearch() {
   console.log("Refreshing search!");
+  console.log(`Searched word is: "${searchedWord.value}"`);
+  console.log(`route.query = ${route.query.word}`);
 
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
+  delete anglishFuzzyResults.value["IGNORE_ME"];
 
   for (const [word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
     let foundMatch = false;
@@ -292,9 +300,9 @@ function refreshSearch() {
       }]
       */
       for (const subDefinition of definition) {
-        if (subDefinition.definitions.includes(props.searchedWord)) {
+        if (subDefinition.definitions.includes(searchedWord.value)) {
           subDefinition.definitions = subDefinition.definitions.replaceAll(
-            props.searchedWord, `<mark>${props.searchedWord}</mark>`
+            searchedWord.value, `<mark>${searchedWord.value}</mark>`
           )
 
           foundMatch = true;
@@ -306,17 +314,7 @@ function refreshSearch() {
       anglishFuzzyResults.value[word] = definitions;
     }
   }
-
-  // console.log(`fuzzy length = ${Object.keys(anglishFuzzyResults.value).length}`);
-
-  // if (Object.keys(anglishFuzzyResults.value).length >= 1) {
-  delete anglishFuzzyResults.value["IGNORE_ME"];
-  // }
-
-  // console.log(`anglishFuzzyResults =\n${JSON.stringify(anglishFuzzyResults.value)}`);
 }
-
-// refreshSearch();
 
 onMounted(() => {
   console.log("Mounted!");
@@ -328,17 +326,21 @@ onMounted(() => {
 // });
 
 const route = useRoute();
+const instance = getCurrentInstance();
 
 watch(route, (_to, _from) => {
-  console.log("Route changed!")
+  console.log("Route changed!");
+  console.log(`before dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
   refreshSearch();
+  instance?.proxy?.$forceUpdate();
+  console.log(`after dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
 });
 
 function entriesIndex(entries: AnglishToEnglishEntry[], index: number) {
   if (entries.length > index) {
-    return entries[index ?? 0];
+    return entries[index ?? 0].word;
   } else {
-    return index;
+    return index.toString();
   }
 }
 </script>

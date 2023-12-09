@@ -8,7 +8,8 @@
           <!-- <SearchResult
             :anglishEnglishWord="getAnglishAlternatives($route.query.word?.toString() ?? '')"
           /> -->
-          <SearchResult :searchedWord="$route.query.word?.toString() ?? ''"/>
+          <!-- <SearchResult :searchedWord="$route.query.word?.toString() ?? ''"/> -->
+          <SearchResult/>
         </v-col>
       </v-row>
     </v-container>
