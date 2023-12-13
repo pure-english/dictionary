@@ -39,7 +39,9 @@
           </div>
 
           <div v-if="word.sub_lemmas.length >= 1">
-            <p><b>Sub-lemmas:</b></p>
+            <p style="padding-top: 10px; padding-bottom: 10px;">
+              <b>Sub-lemmas:</b>
+            </p>
 
             <v-card
               v-for="(lemma, index) in word.sub_lemmas"
