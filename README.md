@@ -18,6 +18,27 @@
 - [x] In the "Other Results" section, only include the meanings of words with a
   relevant definition, instead of every single definition
 - [x] Word definitions need right padding
+- [ ] Tell you if a word is Germanic or not
+* Add to wordlist:
+    - [x] Sexuality
+    - [ ] Months and Holidays
+- [ ] Make searches case-insensitive (easy for search a bit harder for
+  definitions)
+- [ ] Have a note at the start for specific exact matches
+    - [ ] False friends warning -
+      https://anglisc.miraheze.org/wiki/False_Friends
+    - [ ] Will also display if a word is Germanic or not
+- [ ] Edit "to use" words, add ones that aren't there by looking through the
+  "Helpful Anglish Words" page
+- [ ] Separate "exact match" and "related match" in the "Other Results"
+    * Exact fuzzy match will work in the following environments: "{START}X ", "
+      X{END}", " X ", ", X{SPACE/END}", "{START/SPACE}X"
+- [ ] Filter out any "other results" if I've already seen any up top. This
+  means that there won't be duplicates.
+* Sidebar
+    - [ ] Search not just definitions, but headwords (only), notes, etymologies
+  (maybe list them all and make checkmarks)
+    - [ ] List all words of a given Parts-of-speech
 
 ## Project setup
 

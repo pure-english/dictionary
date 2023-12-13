@@ -57,7 +57,7 @@
                       <p><b>Taken From:</b> {{ definition.taken_from }}</p>
 
                       <p v-if="definition.notes">
-                        <b>Notes:</b> {{ definition.notes }}
+                        <b>Notes:</b> <span v-html="definition.notes"></span>
                       </p>
                     </li>
                 </ol>

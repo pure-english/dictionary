@@ -24,7 +24,7 @@
           <div v-if="word.alternatives">
             <p><b>Alternatives:</b></p>
 
-            <p>{{ word.alternatives }}</p>
+            <p v-html="word.alternatives"></p>
           </div>
 
           <p v-if="word.germanic_like_alternatives">
@@ -224,6 +224,7 @@ import { onMounted, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import Fuse from 'fuse.js';
 
 const store = useAppStore();
 const {
@@ -258,6 +259,28 @@ const searchedWord = computed(() => {
 // };
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref(structuredClone(emptyAnglishFuzzyResults));
+
+const fuseOptions = {
+  // isCaseSensitive: false,
+	// includeScore: false,
+	// shouldSort: true,
+	// includeMatches: false,
+	// findAllMatches: false,
+	// minMatchCharLength: 1,
+	// location: 0,
+	// threshold: 0.6,
+	// distance: 100,
+	// useExtendedSearch: false,
+	// ignoreLocation: false,
+	// ignoreFieldNorm: false,
+	// fieldNormWeight: 1,
+  keys: [
+    "word",
+    "anglish_spelling",
+    "definitions",
+  ]
+}
+// const fuse = new Fuse(anglishToEnglishDictionary.value, fuseOptions);
 
 async function refreshSearch() {
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
