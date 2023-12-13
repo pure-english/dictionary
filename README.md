@@ -22,6 +22,11 @@
 * Add to wordlist:
     - [x] Sexuality
     - [ ] Months and Holidays
+    - [ ] Other pronouns
+    - [ ] Living Prefixes
+    - [ ] Living Suffixes
+    - [ ] Dead Prefixes
+    - [ ] Dead Suffixes
 - [ ] Make searches case-insensitive (easy for search a bit harder for
   definitions)
 - [ ] Have a note at the start for specific exact matches
@@ -39,6 +44,7 @@
     - [ ] Search not just definitions, but headwords (only), notes, etymologies
   (maybe list them all and make checkmarks)
     - [ ] List all words of a given Parts-of-speech
+- [x] Add sub-lemmas from Germanic Thesaurus
 
 ## Project setup
 
