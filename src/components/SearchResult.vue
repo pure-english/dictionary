@@ -38,7 +38,7 @@
             <p v-html="word.details"></p>
           </div>
 
-          <div v-if="word.sub_lemmas.length > 1">
+          <div v-if="word.sub_lemmas.length >= 1">
             <p><b>Sub-lemmas:</b></p>
 
             <v-card

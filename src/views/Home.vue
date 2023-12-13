@@ -24,7 +24,7 @@
 
     <p><sub>This project is still in progress, expect errors.</sub></p>
 
-    <p><sub>v1.3.0 (2023-12-13)</sub></p>
+    <p><sub>v1.3.1 (2023-12-13)</sub></p>
   </center>
 </template>
 
