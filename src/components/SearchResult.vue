@@ -37,6 +37,45 @@
 
             <p v-html="word.details"></p>
           </div>
+
+          <div v-if="word.sub_lemmas.length > 1">
+            <p><b>Sub-lemmas:</b></p>
+
+            <v-card
+              v-for="(lemma, index) in word.sub_lemmas"
+              :key="index"
+              class="mb-5"
+            >
+              <v-card-item>
+                <v-card-title>
+                  {{ lemma.lemma }}
+                </v-card-title>
+
+                <v-card-subtitle>
+                  {{ lemma.pos }}
+                </v-card-subtitle>
+              </v-card-item>
+
+              <v-card-text>
+                <div v-if="lemma.alternatives">
+                  <p><b>Alternatives:</b></p>
+
+                  <p v-html="lemma.alternatives"></p>
+                </div>
+
+                <p v-if="lemma.germanic_like_alternatives">
+                  <b>Germanic-like Alternatives:</b>
+                  {{ lemma.germanic_like_alternatives }}
+                </p>
+
+                <div v-if="lemma.details">
+                  <p><b>Details:</b></p>
+
+                  <p v-html="lemma.details"></p>
+                </div>
+              </v-card-text>
+            </v-card>
+          </div>
         </v-card-text>
       </v-card>
     </div>

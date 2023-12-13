@@ -42,10 +42,19 @@ export interface AnglishToEnglish {
   [word: string]: AnglishWord,
 }
 
+export interface GermanicSubEntry {
+  "lemma": string,
+  "pos": string,
+  "alternatives": string,
+  "germanic_like_alternatives": string,
+  "details": string,
+}
+
 export interface GermanicEntry {
   "alternatives": string,
   "germanic_like_alternatives": string,
   "details": string,
+  "sub_lemmas": Array<GermanicSubEntry>,
 }
 
 export interface GermanicEntries {
