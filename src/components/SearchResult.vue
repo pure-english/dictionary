@@ -320,11 +320,6 @@
           <br/><br/>
           The Germanic Thesaurus uses American English (-or, -ize, -yze).
         </p>
-
-        <p>
-          Also, check if your capitalization is correct. Most words are lower
-          case, but some words—such as Proper Nouns—use capital letters.
-        </p>
       </div>
     </center>
   </div>
