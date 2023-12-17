@@ -190,96 +190,101 @@
     <!-- Fuzzy search of Germanic Thesaurus -->
 
     <!-- Word match of Anglish Wordbook -->
-    <h4><center>Results with exact search term</center></h4><br/>
-    <div v-for="(entry, index) in anglishExactResults" :key="index">
-      <v-card>
-        <v-card-item>
-          <v-card-title>
-            <router-link :to="`/word/${entry.word}`">
-              {{ entry.word }}
-              <span
-                v-if="entry.word != entry.anglish_spelling &&
-                entry.anglish_spelling"
-              >
-                ({{ entry.anglish_spelling }})
-              </span>
-            </router-link>
-          </v-card-title>
+    <div v-if="anglishExactResults.length >= 1">
+      <h4><center>Results with exact search term</center></h4><br/>
+      <div v-for="(entry, index) in anglishExactResults" :key="index">
+        <v-card>
+          <v-card-item>
+            <v-card-title>
+              <router-link :to="`/word/${entry.word}`">
+                {{ entry.word }}
+                <span
+                  v-if="entry.word != entry.anglish_spelling &&
+                  entry.anglish_spelling"
+                >
+                  ({{ entry.anglish_spelling }})
+                </span>
+              </router-link>
+            </v-card-title>
 
-          <v-card-subtitle>
-            {{ entry.taken_from }}
-          </v-card-subtitle>
-        </v-card-item>
+            <v-card-subtitle>
+              {{ entry.taken_from }}
+            </v-card-subtitle>
+          </v-card-item>
 
-        <v-card-text style="padding-bottom: 10px !important;">
-          <div>
-            <p><b><u>{{ entry.pos }}</u></b></p>
+          <v-card-text style="padding-bottom: 10px !important;">
+            <div>
+              <p><b><u>{{ entry.pos }}</u></b></p>
 
-            <p>
-              <b>Definitions:</b> <span v-html="entry.definitions"></span>
-            </p>
+              <p>
+                <b>Definitions:</b> <span v-html="entry.definitions"></span>
+              </p>
 
-            <p>
-              <b>Forebear:</b> {{ entry.forebear }}
-            </p>
+              <p>
+                <b>Forebear:</b> {{ entry.forebear }}
+              </p>
 
-            <p v-if="entry.notes">
-              <b>Notes:</b> {{ entry.notes }}
-            </p>
-          </div>
-        </v-card-text>
-      </v-card>
+              <p v-if="entry.notes">
+                <b>Notes:</b> {{ entry.notes }}
+              </p>
+            </div>
+          </v-card-text>
+        </v-card>
 
-      <br/>
+        <br/>
+      </div>
     </div>
 
     <!-- Fuzzy search of Anglish Wordbook -->
-    <h4><center>Results containing search term</center></h4><br/>
-    <div
-      v-for="(entry, index) in anglishFuzzyResults"
-      :key="index"
-    >
-      <v-card>
-        <v-card-item>
-          <v-card-title>
-            <router-link :to="`/word/${entry.word}`">
-              {{ entry.word }}
-              <span
-                v-if="entry.word != entry.anglish_spelling &&
-                entry.anglish_spelling"
-              >
-                ({{ entry.anglish_spelling }})
-              </span>
-            </router-link>
-          </v-card-title>
+    <div v-if="anglishFuzzyResults.length >= 1">
+      <h4><center>Results containing search term</center></h4><br/>
+      <div
+        v-for="(entry, index) in anglishFuzzyResults"
+        :key="index"
+      >
+        <v-card>
+          <v-card-item>
+            <v-card-title>
+              <router-link :to="`/word/${entry.word}`">
+                {{ entry.word }}
+                <span
+                  v-if="entry.word != entry.anglish_spelling &&
+                  entry.anglish_spelling"
+                >
+                  ({{ entry.anglish_spelling }})
+                </span>
+              </router-link>
+            </v-card-title>
 
-          <v-card-subtitle>
-            {{ entry.taken_from }}
-          </v-card-subtitle>
-        </v-card-item>
+            <v-card-subtitle>
+              {{ entry.taken_from }}
+            </v-card-subtitle>
+          </v-card-item>
 
-        <v-card-text style="padding-bottom: 10px !important;">
-          <div>
-            <p><b><u>{{ entry.pos }}</u></b></p>
+          <v-card-text style="padding-bottom: 10px !important;">
+            <div>
+              <p><b><u>{{ entry.pos }}</u></b></p>
 
-            <p>
-              <b>Definitions:</b> <span v-html="entry.definitions"></span>
-            </p>
+              <p>
+                <b>Definitions:</b> <span v-html="entry.definitions"></span>
+              </p>
 
-            <p>
-              <b>Forebear:</b> {{ entry.forebear }}
-            </p>
+              <p>
+                <b>Forebear:</b> {{ entry.forebear }}
+              </p>
 
-            <p v-if="entry.notes">
-              <b>Notes:</b> {{ entry.notes }}
-            </p>
-          </div>
-        </v-card-text>
-      </v-card>
+              <p v-if="entry.notes">
+                <b>Notes:</b> {{ entry.notes }}
+              </p>
+            </div>
+          </v-card-text>
+        </v-card>
 
-      <br/>
+        <br/>
+      </div>
     </div>
   </div>
+
 
     <!-- Germanic-like words from GT -->
   <!-- </div> -->
@@ -404,7 +409,7 @@ async function refreshSearch() {
           continue;
         }
 
-        const exactRegEx = new RegExp(`\\s?(${searchedWord.value})[\\.?,?\\s]`, "ig");
+        const exactRegEx = new RegExp(`\\b(${searchedWord.value})\\b`, "ig");
         const toReplace = [...new Set(clonedSubDefinition.definitions.matchAll(exactRegEx))];
         // console.log(`exact matches = ${toReplace}`);
         // for (const match of toReplace) {
