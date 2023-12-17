@@ -491,6 +491,7 @@ const instance = getCurrentInstance();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(route, (_to, _from) => {
   refreshSearch();
+  window.scrollTo(0, 0);
   instance?.proxy?.$forceUpdate();
 });
 
