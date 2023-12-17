@@ -1,5 +1,25 @@
 <!-- eslint-disable vue/no-unused-vars -->
 <template>
+  <!-- False friends -->
+  <div
+    v-if="searchedWord.toLowerCase() in (falseFriends ?? {})"
+    class="mb-6"
+  >
+    <h2><u><center>False Friend</center></u></h2>
+
+    <v-card class="mt-2">
+      <v-card-item>
+        <v-card-title>
+          {{ searchedWord.toLowerCase() }}
+        </v-card-title>
+      </v-card-item>
+
+      <v-card-text>
+        <p v-html="falseFriends[searchedWord.toLowerCase()]"></p>
+      </v-card-text>
+    </v-card>
+  </div>
+
   <!-- Germanic English alternatives -->
   <div
     v-if="searchedWord in englishToGermanicDictionary ||
@@ -333,7 +353,7 @@ import { onMounted, toRaw, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
-// import Fuse from 'fuse.js';
+import { falseFriends } from "@/variables";
 
 const store = useAppStore();
 const {
@@ -349,28 +369,6 @@ const searchedWord = computed(() => {
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 const anglishExactResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
-
-// const fuseOptions = {
-//   // isCaseSensitive: false,
-// 	// includeScore: false,
-// 	// shouldSort: true,
-// 	// includeMatches: false,
-// 	// findAllMatches: false,
-// 	// minMatchCharLength: 1,
-// 	// location: 0,
-// 	// threshold: 0.6,
-// 	// distance: 100,
-// 	// useExtendedSearch: false,
-// 	// ignoreLocation: false,
-// 	// ignoreFieldNorm: false,
-// 	// fieldNormWeight: 1,
-//   keys: [
-//     "word.pos.word",
-//     "word.pos.anglish_spelling",
-//     "word.pos.definitions",
-//   ]
-// }
-// const fuse = new Fuse(anglishToEnglishDictionary.value, fuseOptions);
 
 async function refreshSearch() {
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
@@ -492,6 +490,7 @@ const instance = getCurrentInstance();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(route, (_to, _from) => {
+  console.log("Force updated!");
   refreshSearch();
   instance?.proxy?.$forceUpdate();
 });

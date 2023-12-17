@@ -65,6 +65,10 @@ export interface GermanicDictionary {
   [word: string]: GermanicEntries,
 }
 
+export interface FalseFriends {
+  [friend: string]: string
+}
+
 /**
  * {
  *  "a": {
