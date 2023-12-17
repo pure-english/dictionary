@@ -1,20 +1,24 @@
 <!-- eslint-disable vue/no-unused-vars -->
 <template>
+  <!-- Germanic English alternatives -->
   <div
-    v-if="searchedWord in englishToGermanicDictionary"
+    v-if="searchedWord in englishToGermanicDictionary ||
+    searchedWord.toLowerCase() in englishToGermanicDictionary ||
+    toTitleCase(searchedWord) in englishToGermanicDictionary"
     class="mb-8"
   >
     <h2><u><center>Germanic English Alternatives</center></u></h2>
 
+    <!-- englishToGermanicDictionary[searchedWord] -->
     <div
-      v-for="(words, pos) in englishToGermanicDictionary[searchedWord]"
+      v-for="(words, pos) in GTSearch(englishToGermanicDictionary, searchedWord)"
       :key="pos"
     >
       <h3 class="mb-5"><center>{{ pos }}</center></h3>
       <v-card v-for="(word, index) in words" :key="index" class="mb-5">
         <v-card-item>
           <v-card-title>
-            {{ searchedWord }}
+            {{ searchedWord.toLowerCase() }}
           </v-card-title>
         </v-card-item>
 
@@ -83,9 +87,18 @@
     </div>
   </div>
 
-  <div v-if="searchedWord in englishToAnglishDictionary">
+  <!-- Anglish Alternatives -->
+  <div v-if="searchedWord in englishToAnglishDictionary ||
+    searchedWord.toLowerCase() in englishToAnglishDictionary ||
+    toTitleCase(searchedWord) in englishToAnglishDictionary">
     <h2><u><center>Anglish Alternatives</center></u></h2>
-    <div v-for="(words, pos) in englishToAnglishDictionary[searchedWord]" :key="pos">
+    <!--
+      v-for="(words, pos) in englishToAnglishDictionary[searchedWord]"
+     -->
+    <div
+      v-for="(words, pos) in ETASearch(englishToAnglishDictionary, searchedWord)"
+      :key="pos"
+    >
       <h3 class="mb-5"><center>{{ pos }}</center></h3>
       <v-card
         v-for="(word, index) in words"
@@ -123,10 +136,14 @@
     </div>
   </div>
 
-  <div v-if="searchedWord in anglishToEnglishDictionary">
+  <!-- Anglish Words -->
+  <div v-if="searchedWord in anglishToEnglishDictionary ||
+    searchedWord.toLowerCase() in anglishToEnglishDictionary ||
+    toTitleCase(searchedWord) in anglishToEnglishDictionary">
     <h2><u><center>Anglish Words</center></u></h2>
 
-    <div v-for="(words, pos) in anglishToEnglishDictionary[searchedWord]" :key="pos">
+    <!-- anglishToEnglishDictionary[searchedWord] -->
+    <div v-for="(words, pos) in ATESearch(anglishToEnglishDictionary, searchedWord)" :key="pos">
       <h3 class="mb-5"><center>{{ pos }}</center></h3>
       <v-card
         v-for="(word, index) in words"
@@ -172,7 +189,14 @@
     <h2><u><center>Other Results</center></u></h2>
     <!-- Fuzzy search of Germanic Thesaurus -->
 
+    <!-- Word match of Anglish Wordbook -->
+    <h4><center>Results with exact search term</center></h4><br/>
+    <div v-for="(entry, index) in anglishFuzzyResults" :key="index">
+
+    </div>
+
     <!-- Fuzzy search of Anglish Wordbook -->
+    <h4><center>Results containing search term</center></h4><br/>
     <div
       v-for="(entry, index) in anglishFuzzyResults"
       :key="index"
@@ -189,22 +213,17 @@
                 ({{ entry.anglish_spelling }})
               </span>
             </router-link>
-
-            <v-chip
-              variant="outlined"
-              size="small"
-              label
-              class="mb-1 ml-3"
-            >
-              {{ entry.pos }}
-            </v-chip>
           </v-card-title>
 
-          <v-card-subtitle>{{ entry.taken_from }}</v-card-subtitle>
+          <v-card-subtitle>
+            {{ entry.taken_from }}
+          </v-card-subtitle>
         </v-card-item>
 
         <v-card-text style="padding-bottom: 10px !important;">
           <div>
+            <p><b><u>{{ entry.pos }}</u></b></p>
+
             <p>
               <b>Definitions:</b> <span v-html="entry.definitions"></span>
             </p>
@@ -270,7 +289,7 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
-import { AnglishToEnglishEntry  } from "@/types";
+import { AnglishEntry, AnglishToEnglishEntry, AnglishWord, EnglishToAnglish, EnglishWord, GermanicEntries  } from "@/types";
 import { storeToRefs } from "pinia";
 import { onMounted, toRaw, watch } from "vue";
 import { getCurrentInstance } from "vue";
@@ -285,32 +304,12 @@ const {
   englishToGermanicDictionary,
 } = storeToRefs(store);
 
-// const props = defineProps<{
-//   // germanicEnglishWord?: false,
-//   // anglishEnglishWord: EnglishWord,
-//   searchedWord: string,
-// }>();
-
 const searchedWord = computed(() => {
   return route.query.word?.toString() ?? '';
 });
 
-// const oldEmptyAnglishFuzzyResults: AnglishToEnglish = {
-//   "IGNORE_ME": {
-//     "POS": [{
-//       word: "",
-//       anglish_spelling: "",
-//       definitions: "",
-//       pos: "",
-//       forebear: "",
-//       taken_from: "",
-//       notes: "",
-//       is_anglish: false,
-//     }]
-//   }
-// };
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
-const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref(structuredClone(emptyAnglishFuzzyResults));
+const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 
 // const fuseOptions = {
 //   // isCaseSensitive: false,
@@ -351,19 +350,6 @@ async function refreshSearch() {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_pos, definition] of Object.entries(definitions)) {
-      // console.log(`pos: ${pos}; def: ${JSON.stringify(definition)}`)
-      // pos: Proper Noun; def:
-      /**
-       [{
-          "word": "Yuletide",
-          "anglish_spelling": "Geƿltide",
-          "definitions": "the period of several days around and including Christmas Day",
-          "pos": "Proper Noun ",
-          "forebear": "Yuletide ",
-          "taken_from ": "NE",
-          "notes ": "[CED]᛫ Anglisc Spelling based on variant which avoids awkward\ "geool\""
-      }]
-      */
       for (const subDefinition of definition) {
         const clonedSubDefinition = structuredClone(toRaw(subDefinition));
 
@@ -375,10 +361,25 @@ async function refreshSearch() {
           continue;
         }
 
-        if (clonedSubDefinition.definitions.includes(searchedWord.value)) {
-          clonedSubDefinition.definitions = clonedSubDefinition.definitions.replaceAll(
-            searchedWord.value, `<mark>${searchedWord.value}</mark>`
-          )
+        if (clonedSubDefinition.definitions.toLowerCase().includes(searchedWord.value.toLowerCase())) {
+          // Case-insensitive replacing
+          // g = global; i = case-insensitive
+          const regEx = new RegExp(`(?<searchMatch>${searchedWord.value})`, "ig");
+
+          // clonedSubDefinition.definitions = clonedSubDefinition.definitions.replaceAll(
+          //   regEx, `<mark>${searchedWord.value}</mark>`
+          // );
+
+          const toReplace = [...new Set(clonedSubDefinition.definitions.matchAll(regEx))];
+
+          for (const changes of toReplace) {
+            for (const change of changes) {
+              const changeString = change.toString();
+              clonedSubDefinition.definitions = clonedSubDefinition.definitions.replaceAll(
+                changeString, `<mark>${changeString.toString()}</mark>`
+              );
+            }
+          }
 
           foundMatch = true;
 
@@ -410,21 +411,47 @@ onMounted(() => {
   });
 });
 
-// onUpdated(() => {
-//   refreshSearch();
-// });
-
 const route = useRoute();
 const instance = getCurrentInstance();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(route, (_to, _from) => {
-  // console.log("Route changed!");
-  // console.log(`before dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
   refreshSearch();
   instance?.proxy?.$forceUpdate();
-  // console.log(`after dict = ${JSON.stringify(anglishFuzzyResults.value)}`);
 });
+
+function toTitleCase(str: string) {
+  return str.toLowerCase().split(' ').map(function(word) {
+    return word.replace(word[0], word[0].toUpperCase());
+  }).join(' ');
+}
+
+function GTSearch(dict: any, searchTerm: string): GermanicEntries {
+  return {
+    ...dict[searchTerm.toUpperCase()],
+    ...dict[searchTerm.toUpperCase()],
+    ...dict[searchTerm.toLowerCase()],
+    ...dict[searchTerm],
+  }
+}
+
+function ETASearch(dict: any, searchTerm: string): EnglishWord {
+  return {
+    ...dict[searchTerm.toUpperCase()],
+    ...dict[searchTerm.toUpperCase()],
+    ...dict[searchTerm.toLowerCase()],
+    ...dict[searchTerm],
+  };
+}
+
+function ATESearch(dict: any, searchTerm: string): AnglishWord {
+  return {
+    ...dict[searchTerm.toUpperCase()],
+    ...dict[searchTerm.toUpperCase()],
+    ...dict[searchTerm.toLowerCase()],
+    ...dict[searchTerm],
+  };
+}
 </script>
 
 <style scoped>
