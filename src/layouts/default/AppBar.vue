@@ -47,14 +47,19 @@ function searchWord() {
 
 onMounted(() => {
   const searchBar = document.getElementById("searchBar");
+  const wordlistSearch = document.getElementById("wordlistSearch");
 
   window.addEventListener("keyup", (e) => {
     // If the key is pressed and it is not focused
-    if (e.code === "KeyS" && !(document.activeElement === searchBar)) {
+    if (e.code === "KeyS"
+      && (document.activeElement !== searchBar)
+      && (document.activeElement !== wordlistSearch)) {
       // console.log("Pressed 's'!");
       searchBar?.focus();
     // Unfocus the search bar if escape is pressed
     } else if (e.code === "Escape" && (document.activeElement === searchBar)) {
+      searchBar?.blur();
+    } else if (e.code === "Enter" && (document.activeElement === searchBar)) {
       searchBar?.blur();
     }
   });

@@ -15,7 +15,9 @@ import { storeToRefs } from 'pinia';
 
 const store = useAppStore();
 const {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   anglishToEnglishDictionary,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   englishToAnglishDictionary,
 } = storeToRefs(store);
 </script>

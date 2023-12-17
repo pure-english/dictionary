@@ -25,6 +25,20 @@
     </p>
 
     <p>
+      <b>Other links</b>
+      <ul>
+        <li>
+          <router-link to="./list/">Interactive Wordlist</router-link> (for sorting and filtering)
+        </li>
+        <li>
+          <a href="https://pure-english.github.io/name-generator/" target="_blank">
+            Anglish Name Generator
+          </a> (generating names)
+        </li>
+      </ul>
+    </p>
+
+    <p>
       <b>Credits</b>
       <ul>
         <li>
@@ -42,16 +56,26 @@
 
     <p><sub>This project is still in progress, expect errors.</sub></p>
 
-    <p><sub>v1.4.1 (2023-12-17)</sub></p>
+    <p><sub>v1.5.0 (2023-12-17)</sub></p>
   </center>
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue';
+
 // window.addEventListener("keydown", (e) => {
 //   if (e.code === "KeyS") {
 //     console.log("Pressed 's'!");
 //   }
 // });
+onMounted(() => {
+  const searchBar = document.getElementById("searchBar");
+  window.addEventListener("keyup", (e) => {
+    if (e.key === "Enter" && (document.activeElement === searchBar)) {
+      searchBar?.blur();
+    }
+  });
+});
 </script>
 
 <style scoped>

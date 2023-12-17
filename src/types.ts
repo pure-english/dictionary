@@ -89,3 +89,5 @@ export interface GermanicDictionary {
     },
  * }
  */
+
+export type AnglishWordlist = Array<AnglishEntry>;
