@@ -191,8 +191,46 @@
 
     <!-- Word match of Anglish Wordbook -->
     <h4><center>Results with exact search term</center></h4><br/>
-    <div v-for="(entry, index) in anglishFuzzyResults" :key="index">
+    <div v-for="(entry, index) in anglishExactResults" :key="index">
+      <v-card>
+        <v-card-item>
+          <v-card-title>
+            <router-link :to="`/word/${entry.word}`">
+              {{ entry.word }}
+              <span
+                v-if="entry.word != entry.anglish_spelling &&
+                entry.anglish_spelling"
+              >
+                ({{ entry.anglish_spelling }})
+              </span>
+            </router-link>
+          </v-card-title>
 
+          <v-card-subtitle>
+            {{ entry.taken_from }}
+          </v-card-subtitle>
+        </v-card-item>
+
+        <v-card-text style="padding-bottom: 10px !important;">
+          <div>
+            <p><b><u>{{ entry.pos }}</u></b></p>
+
+            <p>
+              <b>Definitions:</b> <span v-html="entry.definitions"></span>
+            </p>
+
+            <p>
+              <b>Forebear:</b> {{ entry.forebear }}
+            </p>
+
+            <p v-if="entry.notes">
+              <b>Notes:</b> {{ entry.notes }}
+            </p>
+          </div>
+        </v-card-text>
+      </v-card>
+
+      <br/>
     </div>
 
     <!-- Fuzzy search of Anglish Wordbook -->
@@ -201,7 +239,7 @@
       v-for="(entry, index) in anglishFuzzyResults"
       :key="index"
     >
-    <v-card>
+      <v-card>
         <v-card-item>
           <v-card-title>
             <router-link :to="`/word/${entry.word}`">
@@ -289,7 +327,7 @@
 
 <script setup lang="ts">
 import { useAppStore } from "@/store/app";
-import { AnglishEntry, AnglishToEnglishEntry, AnglishWord, EnglishToAnglish, EnglishWord, GermanicEntries  } from "@/types";
+import { AnglishToEnglishEntry, AnglishWord, EnglishWord, GermanicEntries  } from "@/types";
 import { storeToRefs } from "pinia";
 import { onMounted, toRaw, watch } from "vue";
 import { getCurrentInstance } from "vue";
@@ -310,6 +348,7 @@ const searchedWord = computed(() => {
 
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
+const anglishExactResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 
 // const fuseOptions = {
 //   // isCaseSensitive: false,
@@ -326,15 +365,16 @@ const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 // 	// ignoreFieldNorm: false,
 // 	// fieldNormWeight: 1,
 //   keys: [
-//     "word",
-//     "anglish_spelling",
-//     "definitions",
+//     "word.pos.word",
+//     "word.pos.anglish_spelling",
+//     "word.pos.definitions",
 //   ]
 // }
 // const fuse = new Fuse(anglishToEnglishDictionary.value, fuseOptions);
 
 async function refreshSearch() {
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
+  anglishExactResults.value = structuredClone(emptyAnglishFuzzyResults);
   // delete anglishFuzzyResults.value["IGNORE_ME"];
 
   while ("NOT_LOADED" in anglishToEnglishDictionary.value) {
@@ -344,9 +384,12 @@ async function refreshSearch() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const [_word, definitions] of Object.entries(anglishToEnglishDictionary.value)) {
-    let foundMatch = false;
+    let foundExactMatch = false;
+    let foundExactMatchSwitch = false;
+    let foundFuzzyMatch = false;
 
-    let new_definitions: AnglishToEnglishEntry[] = [];
+    let newFuzzyDefinitions: AnglishToEnglishEntry[] = [];
+    let newExactDefinitions: AnglishToEnglishEntry[] = [];
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const [_pos, definition] of Object.entries(definitions)) {
@@ -361,6 +404,31 @@ async function refreshSearch() {
           continue;
         }
 
+        const exactRegEx = new RegExp(`\\s?(${searchedWord.value})[\\.?,?\\s]`, "ig");
+        const toReplace = [...new Set(clonedSubDefinition.definitions.matchAll(exactRegEx))];
+        // console.log(`exact matches = ${toReplace}`);
+        // for (const match of toReplace) {
+        //   console.log(`match = ${match}`);
+        // }
+        for (const changes of toReplace) {
+          for (const change of changes) {
+            const changeString = change.toString();
+            clonedSubDefinition.definitions = clonedSubDefinition.definitions.replaceAll(
+              changeString, `<mark>${changeString.toString()}</mark>`
+            );
+
+            // If it has made it here, then there's been a match
+            foundExactMatch = true;
+            foundExactMatchSwitch = true;
+          }
+        }
+
+        if (foundExactMatchSwitch) {
+          newExactDefinitions.push(clonedSubDefinition);
+          foundExactMatchSwitch = false;
+        }
+
+        // Find fuzzy matches
         if (clonedSubDefinition.definitions.toLowerCase().includes(searchedWord.value.toLowerCase())) {
           // Case-insensitive replacing
           // g = global; i = case-insensitive
@@ -381,15 +449,20 @@ async function refreshSearch() {
             }
           }
 
-          foundMatch = true;
+          foundFuzzyMatch = true;
 
-          new_definitions.push(clonedSubDefinition);
+          newFuzzyDefinitions.push(clonedSubDefinition);
         }
       }
     }
 
-    if (foundMatch) {
-      anglishFuzzyResults.value = anglishFuzzyResults.value.concat(new_definitions);
+    if (foundFuzzyMatch) {
+      anglishFuzzyResults.value = anglishFuzzyResults.value.concat(newFuzzyDefinitions);
+    }
+
+    if (foundExactMatch) {
+      anglishExactResults.value = anglishExactResults.value.concat(newExactDefinitions);
+      console.log(`exact results = ${JSON.stringify(anglishExactResults.value)}`);
     }
   }
 }
