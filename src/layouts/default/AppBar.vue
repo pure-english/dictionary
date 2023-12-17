@@ -23,6 +23,7 @@
           variant="solo-filled"
           clearable
           v-model="searchBarValue"
+          :autofocus="true"
         ></v-text-field>
       </v-form>
     </v-responsive>
