@@ -189,6 +189,15 @@
                 ({{ entry.anglish_spelling }})
               </span>
             </router-link>
+
+            <v-chip
+              variant="outlined"
+              size="small"
+              label
+              class="mb-1 ml-3"
+            >
+              {{ entry.pos }}
+            </v-chip>
           </v-card-title>
 
           <v-card-subtitle>{{ entry.taken_from }}</v-card-subtitle>
@@ -196,10 +205,6 @@
 
         <v-card-text style="padding-bottom: 10px !important;">
           <div>
-            <p>
-              <i>{{ entry.pos }}</i>
-            </p>
-
             <p>
               <b>Definitions:</b> <span v-html="entry.definitions"></span>
             </p>
@@ -236,16 +241,22 @@
         <p>Try to search using only a lemma/the dictionary form of words.</p>
 
         <p>
-          E.g. instead of "bears", try "bear".
-          Instead of "broke" try "break".
+          E.g. "bear" instead of "bears".
+          "break" instead of "broke".
+          "fly" instead of "to fly".
+          "good" instead of "better".
         </p>
 
         <p>
-          Keep in mind regional spelling differences. The Wordbook uses the
+          Keep in mind regional spelling differences:
+          <br/><br/>
+          The Wordbook uses the
           <a href="https://en.wikipedia.org/wiki/Oxford_spelling">
             Oxford spelling variant of British English</a>. That means using -our
             words like armour and flavour, along with -ize endings like realize
-            and utilize (but not -yse endings like analyse).
+            and utilize (but not -yze endings; -yse endings, like analyse).
+          <br/><br/>
+          The Germanic Thesaurus uses American English (-or, -ize, -yze).
         </p>
 
         <p>
@@ -383,6 +394,19 @@ async function refreshSearch() {
 onMounted(() => {
   console.log("Mounted!");
   refreshSearch();
+
+  const searchBar = document.getElementById("searchBar");
+  window.addEventListener("keyup", (e) => {
+    // If the key is pressed and the search bar is not focused
+    if (e.code === "KeyU" && !(document.activeElement === searchBar)) {
+      window.scrollTo(0, 0);
+    } else if (e.key === "Enter" && (document.activeElement === searchBar)) {
+      window.scrollTo(0, 0);
+    } else if (e.code === "KeyD" && !(document.activeElement === searchBar)) {
+      console.log("Scrolling down!");
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  });
 });
 
 // onUpdated(() => {

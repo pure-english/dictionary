@@ -23,6 +23,7 @@
           variant="solo-filled"
           clearable
           v-model="searchBarValue"
+          id="searchBar"
           :autofocus="true"
         ></v-text-field>
       </v-form>
@@ -34,6 +35,7 @@
 
 <script lang="ts" setup>
 import router from '@/router';
+import { onMounted } from 'vue';
 import { ref } from 'vue';
 
 let searchBarValue = ref("");
@@ -42,6 +44,21 @@ function searchWord() {
   // Go to the word search results
   router.push({ path: "/search", query: { word: searchBarValue.value } });
 }
+
+onMounted(() => {
+  const searchBar = document.getElementById("searchBar");
+
+  window.addEventListener("keyup", (e) => {
+    // If the key is pressed and it is not focused
+    if (e.code === "KeyS" && !(document.activeElement === searchBar)) {
+      // console.log("Pressed 's'!");
+      searchBar?.focus();
+    // Unfocus the search bar if escape is pressed
+    } else if (e.code === "Escape" && (document.activeElement === searchBar)) {
+      searchBar?.blur();
+    }
+  });
+});
 </script>
 
 <style scoped>

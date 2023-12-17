@@ -7,6 +7,24 @@
     <p>Search a term to get started.</p>
 
     <p>
+      <b>How to Use</b>
+      <ul>
+        <li>Search an English or Anglish term to get results.</li>
+        <li>The search is autofocused, so you can type away.</li>
+      </ul>
+    </p>
+
+    <p>
+      <b>Shortcuts</b>
+      <ul>
+        <li>To unfocus the search bar, press the <b>Escape</b> key.</li>
+        <li>To refocus on the search bar, press '<b>s</b>' for "search".</li>
+        <li>To scroll to the top, press '<b>u</b>' for "up".</li>
+        <li>To scroll to the bottom, press '<b>d</b>' for "down".</li>
+      </ul>
+    </p>
+
+    <p>
       <b>Credits</b>
       <ul>
         <li>
@@ -24,12 +42,16 @@
 
     <p><sub>This project is still in progress, expect errors.</sub></p>
 
-    <p><sub>v1.3.2 (2023-12-13)</sub></p>
+    <p><sub>v1.4.0 (2023-12-17)</sub></p>
   </center>
 </template>
 
 <script lang="ts" setup>
-
+// window.addEventListener("keydown", (e) => {
+//   if (e.code === "KeyS") {
+//     console.log("Pressed 's'!");
+//   }
+// });
 </script>
 
 <style scoped>
