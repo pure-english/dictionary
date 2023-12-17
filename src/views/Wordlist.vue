@@ -45,6 +45,7 @@
             :search="search"
             :items-per-page="10"
             multi-sort
+            density="compact"
           >
           </v-data-table>
         </v-card>
@@ -63,7 +64,23 @@ const {
   anglishWordlist
 } = storeToRefs(store);
 
-const headers = [
+const headers: {
+  readonly key?:
+    | 'data-table-group'
+    | 'data-table-select'
+    | 'data-table-expand'
+    | (string & {})
+    | undefined
+  readonly title?: string | undefined
+  readonly fixed?: boolean | undefined
+  readonly align?: 'start' | 'end' | 'center' | undefined
+  readonly width?: string | number | undefined
+  readonly minWidth?: string | undefined
+  readonly maxWidth?: string | undefined
+  readonly headerProps?: { readonly [x: string]: any } | undefined
+  readonly sortable?: boolean | undefined
+  readonly children?: readonly any[] | undefined
+}[] = [
   {
     key: "word",
     title: "Word",
