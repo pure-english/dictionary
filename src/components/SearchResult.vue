@@ -470,6 +470,8 @@ onMounted(() => {
   console.log("Mounted!");
   refreshSearch();
 
+  document.title = `'${searchedWord.value}' - Online Anglish Dictionary`;
+
   const searchBar = document.getElementById("searchBar");
   window.addEventListener("keyup", (e) => {
     // If the key is pressed and the search bar is not focused

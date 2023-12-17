@@ -114,6 +114,7 @@ const headers: {
 const search: Ref<string> = ref("");
 
 onMounted(() => {
+  document.title = `Interactive Anglish Wordlist - Online Anglish Dictionary`;
   const searchBar = document.getElementById("searchBar");
   searchBar?.blur();
 });

@@ -98,6 +98,7 @@ import { useRoute } from 'vue-router';
 import { useAppStore } from '@/store/app';
 import { storeToRefs } from 'pinia';
 import { AnglishToEnglish } from '@/types';
+import { onMounted } from 'vue';
 
 const route = useRoute();
 const store = useAppStore();
@@ -126,6 +127,10 @@ if ("NOT_LOADED" in anglishToEnglishDictionary.value) {
 
 // // This will potentially force an update
 // JSON.stringify(foundWord.value);
+
+onMounted(() => {
+  document.title = `${route.params.word} - Online Anglish Dictionary`;
+});
 </script>
 
 <style scoped>
