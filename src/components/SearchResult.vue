@@ -478,6 +478,7 @@ onMounted(() => {
       window.scrollTo(0, 0);
     } else if (e.key === "Enter" && (document.activeElement === searchBar)) {
       window.scrollTo(0, 0);
+      searchBar?.blur();
     } else if (e.code === "KeyD" && !(document.activeElement === searchBar)) {
       window.scrollTo(0, document.body.scrollHeight);
     }

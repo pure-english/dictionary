@@ -27,7 +27,7 @@
     - [ ] Living Suffixes
     - [ ] Dead Prefixes
     - [ ] Dead Suffixes
-- [ ] Make searches case-insensitive (easy for search a bit harder for
+- [x] Make searches case-insensitive (easy for search a bit harder for
   definitions)
 - [ ] Have a note at the start for specific exact matches
     - [ ] False friends warning -
@@ -35,7 +35,7 @@
     - [ ] Will also display if a word is Germanic or not
 - [ ] Edit "to use" words, add ones that aren't there by looking through the
   "Helpful Anglish Words" page
-- [ ] Separate "exact match" and "related match" in the "Other Results"
+- [x] Separate "exact match" and "related match" in the "Other Results"
     * Exact fuzzy match will work in the following environments: "{START}X ", "
       X{END}", " X ", ", X{SPACE/END}", "{START/SPACE}X"
 - [ ] Filter out any "other results" if I've already seen any up top. This
@@ -44,6 +44,7 @@
     - [ ] Search not just definitions, but headwords (only), notes, etymologies
   (maybe list them all and make checkmarks)
     - [ ] List all words of a given Parts-of-speech
+        * Just have a "Wordlist" table that can be filtered
 - [x] Add sub-lemmas from Germanic Thesaurus
 
 ## Project setup
