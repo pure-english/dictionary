@@ -46,7 +46,7 @@ function searchWord() {
 }
 
 onMounted(() => {
-  const searchBar = document.getElementById("searchBar");
+  const searchBar = document.getElementById("searchBar") as HTMLInputElement;
   // const wordlistSearch = document.getElementById("wordlistSearch");
 
   window.addEventListener("keyup", (e) => {
@@ -56,6 +56,7 @@ onMounted(() => {
       && (document.activeElement?.id !== "wordlistSearch")) {
       // console.log(`Focusing search! activeElement = ${document.activeElement?.id}`);
       searchBar?.focus();
+      searchBar?.select();
     // Unfocus the search bar if escape is pressed
     } else if (e.code === "Escape" && (document.activeElement === searchBar)) {
       searchBar?.blur();
