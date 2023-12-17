@@ -54,7 +54,7 @@ onMounted(() => {
     if (e.code === "KeyS"
       && (document.activeElement !== searchBar)
       && (document.activeElement !== wordlistSearch)) {
-      // console.log("Pressed 's'!");
+      // console.log(`Focusing search! activeElement = ${document.activeElement}`);
       searchBar?.focus();
     // Unfocus the search bar if escape is pressed
     } else if (e.code === "Escape" && (document.activeElement === searchBar)) {

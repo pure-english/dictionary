@@ -111,7 +111,7 @@ const headers: {
     title: "Notes",
   },
 ];
-let search: Ref<string> = ref("");
+const search: Ref<string> = ref("");
 
 onMounted(() => {
   const searchBar = document.getElementById("searchBar");

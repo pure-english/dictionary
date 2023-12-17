@@ -462,7 +462,6 @@ async function refreshSearch() {
 
     if (foundExactMatch) {
       anglishExactResults.value = anglishExactResults.value.concat(newExactDefinitions);
-      console.log(`exact results = ${JSON.stringify(anglishExactResults.value)}`);
     }
   }
 }

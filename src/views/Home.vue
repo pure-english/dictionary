@@ -63,11 +63,6 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 
-// window.addEventListener("keydown", (e) => {
-//   if (e.code === "KeyS") {
-//     console.log("Pressed 's'!");
-//   }
-// });
 onMounted(() => {
   const searchBar = document.getElementById("searchBar");
   window.addEventListener("keyup", (e) => {
