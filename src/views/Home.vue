@@ -56,7 +56,7 @@
 
     <p><sub>This project is still in progress, expect errors.</sub></p>
 
-    <p><sub>v1.5.0 (2023-12-17)</sub></p>
+    <p><sub>v1.5.1 (2023-12-17)</sub></p>
   </center>
 </template>
 
