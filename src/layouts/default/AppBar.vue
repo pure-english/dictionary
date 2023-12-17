@@ -47,13 +47,13 @@ function searchWord() {
 
 onMounted(() => {
   const searchBar = document.getElementById("searchBar");
-  const wordlistSearch = document.getElementById("wordlistSearch");
+  // const wordlistSearch = document.getElementById("wordlistSearch");
 
   window.addEventListener("keyup", (e) => {
     // If the key is pressed and it is not focused
     if (e.code === "KeyS"
       && (document.activeElement !== searchBar)
-      && (document.activeElement !== wordlistSearch)) {
+      && (document.activeElement?.id !== "wordlistSearch")) {
       console.log(`Focusing search! activeElement = ${document.activeElement?.id}`);
       searchBar?.focus();
     // Unfocus the search bar if escape is pressed

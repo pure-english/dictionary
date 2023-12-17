@@ -20,6 +20,9 @@
 
             <p>You cannot, however, search in two columns at once.</p>
 
+            <p>You can sort multiple columns at a time. Each column will have a
+            number at the side which indicates the order in which is sorts.</p>
+
             <p>This wordlist automatically limits itself to 10 words at a time
             (due to processing lag), but this can be controlled at the very
             bottom with the "Items per page" dropdown selector.</p>
