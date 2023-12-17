@@ -272,11 +272,11 @@
 import { useAppStore } from "@/store/app";
 import { AnglishToEnglishEntry  } from "@/types";
 import { storeToRefs } from "pinia";
-import { onMounted, watch } from "vue";
+import { onMounted, toRaw, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
-import Fuse from 'fuse.js';
+// import Fuse from 'fuse.js';
 
 const store = useAppStore();
 const {
@@ -312,26 +312,26 @@ const searchedWord = computed(() => {
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref(structuredClone(emptyAnglishFuzzyResults));
 
-const fuseOptions = {
-  // isCaseSensitive: false,
-	// includeScore: false,
-	// shouldSort: true,
-	// includeMatches: false,
-	// findAllMatches: false,
-	// minMatchCharLength: 1,
-	// location: 0,
-	// threshold: 0.6,
-	// distance: 100,
-	// useExtendedSearch: false,
-	// ignoreLocation: false,
-	// ignoreFieldNorm: false,
-	// fieldNormWeight: 1,
-  keys: [
-    "word",
-    "anglish_spelling",
-    "definitions",
-  ]
-}
+// const fuseOptions = {
+//   // isCaseSensitive: false,
+// 	// includeScore: false,
+// 	// shouldSort: true,
+// 	// includeMatches: false,
+// 	// findAllMatches: false,
+// 	// minMatchCharLength: 1,
+// 	// location: 0,
+// 	// threshold: 0.6,
+// 	// distance: 100,
+// 	// useExtendedSearch: false,
+// 	// ignoreLocation: false,
+// 	// ignoreFieldNorm: false,
+// 	// fieldNormWeight: 1,
+//   keys: [
+//     "word",
+//     "anglish_spelling",
+//     "definitions",
+//   ]
+// }
 // const fuse = new Fuse(anglishToEnglishDictionary.value, fuseOptions);
 
 async function refreshSearch() {
@@ -365,7 +365,9 @@ async function refreshSearch() {
       }]
       */
       for (const subDefinition of definition) {
-        if (subDefinition.is_anglish) {
+        const clonedSubDefinition = structuredClone(toRaw(subDefinition));
+
+        if (clonedSubDefinition.is_anglish) {
           continue;
         }
 
@@ -373,14 +375,14 @@ async function refreshSearch() {
           continue;
         }
 
-        if (subDefinition.definitions.includes(searchedWord.value)) {
-          subDefinition.definitions = subDefinition.definitions.replaceAll(
+        if (clonedSubDefinition.definitions.includes(searchedWord.value)) {
+          clonedSubDefinition.definitions = clonedSubDefinition.definitions.replaceAll(
             searchedWord.value, `<mark>${searchedWord.value}</mark>`
           )
 
           foundMatch = true;
 
-          new_definitions.push(subDefinition);
+          new_definitions.push(clonedSubDefinition);
         }
       }
     }
@@ -403,7 +405,6 @@ onMounted(() => {
     } else if (e.key === "Enter" && (document.activeElement === searchBar)) {
       window.scrollTo(0, 0);
     } else if (e.code === "KeyD" && !(document.activeElement === searchBar)) {
-      console.log("Scrolling down!");
       window.scrollTo(0, document.body.scrollHeight);
     }
   });
