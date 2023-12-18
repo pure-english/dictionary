@@ -1,5 +1,52 @@
 <!-- eslint-disable vue/no-unused-vars -->
 <template>
+  <!-- Etymology -->
+  <div class="mb-5" width="350">
+    <v-expansion-panels variant="accordion" width="350">
+      <v-expansion-panel
+        :title="`Etymology of '${searchedWord}'`"
+        width="350"
+      >
+        <v-expansion-panel-text>
+          <v-card>
+            <v-tabs
+              v-model="tab"
+              bg-color="primary"
+            >
+              <!-- <v-tab value="wiktionary">Etymonline</v-tab> -->
+              <v-tab value="etymonline">Etymonline</v-tab>
+              <!-- <v-tab value="OED">OED</v-tab> -->
+            </v-tabs>
+
+            <v-card-text>
+              <v-window v-model="tab">
+                <!-- <v-window-item value="wiktionary">
+                  Wiktionary etymology
+                </v-window-item> -->
+
+                <v-window-item value="etymonline">
+                  <iframe
+                    :src="`https://etymonline.com/word/${searchedWord}`"
+                    id="etymologyIFrame"
+                    height="500"
+                    frameborder="0"
+                    referrerpolicy="no-referrer"
+                    style="object-fit: contain; max-height: 500px;"
+                  >
+                  </iframe>
+                </v-window-item>
+
+                <!-- <v-window-item value="OED">
+                  OED etymology
+                </v-window-item> -->
+              </v-window>
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </div>
+
   <!-- False friends -->
   <div
     v-if="searchedWord.toLowerCase() in (falseFriends ?? {})"
@@ -369,6 +416,7 @@ const searchedWord = computed(() => {
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 const anglishExactResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
+const tab = ref("etymonline");
 
 async function refreshSearch() {
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
@@ -464,7 +512,7 @@ async function refreshSearch() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   console.log("Mounted!");
   refreshSearch();
 
@@ -483,6 +531,14 @@ onMounted(() => {
       window.scrollTo(0, document.body.scrollHeight);
     }
   });
+
+  // while (etymologyIFrame.value === null) {
+  //   console.log("Waiting for etymology iframe to load…");
+  //   await new Promise(resolve => setTimeout(resolve, 300));
+  // }
+  // etymologyIFrame.value.onload = function () {
+  //   etymologyIFrame.value?.contentWindow?.scrollBy(0, 444);
+  // };
 });
 
 const route = useRoute();
@@ -540,5 +596,10 @@ h2 {
 
 div#not-found>p {
   padding-bottom: 16px;
+}
+
+iframe {
+  display: block;
+  width: 100%;
 }
 </style>
