@@ -17,8 +17,8 @@ export const useAppStore = defineStore("app", () => {
   ? "/dictionary/anglish_wordlist.json"
   : "/anglish_wordlist.json";
   const etymologyPath = process.env.NODE_ENV === 'production'
-  ? "/dictionary/etymology.json"
-  : "/etymology.json";
+  ? "/dictionary/etymologies.json"
+  : "/etymologies.json";
 
   const anglishToEnglishDictionary: Ref<AnglishToEnglish> = ref({
     "NOT_LOADED": {

@@ -2,49 +2,68 @@
 <template>
   <!-- Etymology -->
   <div class="mb-5" width="350">
-    <v-expansion-panels variant="accordion" width="350">
+    <!-- <v-expansion-panels variant="accordion" width="350">
       <v-expansion-panel
         :title="`Etymology of '${searchedWord}'`"
         width="350"
       >
-        <v-expansion-panel-text>
-          <v-card>
-            <v-tabs
-              v-model="tab"
-              bg-color="primary"
+        <v-expansion-panel-text> -->
+    <v-card>
+      <v-tabs
+        v-model="tab"
+        bg-color="primary"
+      >
+        <v-tab value="wiktionary">
+          Wiktionary
+        </v-tab>
+        <v-tab value="etymonline">Etymonline</v-tab>
+        <!-- <v-tab value="OED">OED</v-tab> -->
+      </v-tabs>
+
+      <v-card-text>
+        <v-window v-model="tab">
+          <v-window-item value="wiktionary" v-if="searchedWord in etymologies">
+            <h2>{{ searchedWord }}</h2>
+            <p>
+              <b>Origin: </b>
+              <etymology-chip :language="etymologies[searchedWord].origin"/>
+            </p>
+            <p v-if="etymologies[searchedWord].sub_origins.length > 1">
+              <b>Sub-origins:</b>
+              <span
+                v-for="(sub_origin, index) in etymologies[searchedWord].sub_origins"
+                :key="index"
+              >
+                <etymology-chip :language="sub_origin"/>
+              </span>
+            </p>
+          </v-window-item>
+
+          <v-window-item value="wiktionary" v-else>
+            <h4>Could not find '{{ searchedWord }}'. Sorry.</h4>
+          </v-window-item>
+
+          <v-window-item value="etymonline">
+            <iframe
+              :src="`https://etymonline.com/word/${searchedWord}`"
+              id="etymologyIFrame"
+              height="500"
+              frameborder="0"
+              referrerpolicy="no-referrer"
+              style="object-fit: contain; max-height: 500px;"
             >
-              <!-- <v-tab value="wiktionary">Etymonline</v-tab> -->
-              <v-tab value="etymonline">Etymonline</v-tab>
-              <!-- <v-tab value="OED">OED</v-tab> -->
-            </v-tabs>
+            </iframe>
+          </v-window-item>
 
-            <v-card-text>
-              <v-window v-model="tab">
-                <!-- <v-window-item value="wiktionary">
-                  Wiktionary etymology
-                </v-window-item> -->
-
-                <v-window-item value="etymonline">
-                  <iframe
-                    :src="`https://etymonline.com/word/${searchedWord}`"
-                    id="etymologyIFrame"
-                    height="500"
-                    frameborder="0"
-                    referrerpolicy="no-referrer"
-                    style="object-fit: contain; max-height: 500px;"
-                  >
-                  </iframe>
-                </v-window-item>
-
-                <!-- <v-window-item value="OED">
-                  OED etymology
-                </v-window-item> -->
-              </v-window>
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-text>
+          <!-- <v-window-item value="OED">
+            OED etymology
+          </v-window-item> -->
+        </v-window>
+      </v-card-text>
+    </v-card>
+        <!-- </v-expansion-panel-text>
       </v-expansion-panel>
-    </v-expansion-panels>
+    </v-expansion-panels> -->
   </div>
 
   <!-- False friends -->
@@ -248,6 +267,7 @@
     </div>
   </div>
 
+  <!-- Other results -->
   <div
     v-if="anglishFuzzyResults &&
     !('IGNORE_ME' in anglishFuzzyResults) &&
@@ -402,11 +422,14 @@ import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { falseFriends } from "@/variables";
 
+import EtymologyChip from "@/components/EtymologyChip.vue";
+
 const store = useAppStore();
 const {
   anglishToEnglishDictionary,
   englishToAnglishDictionary,
   englishToGermanicDictionary,
+  etymologies,
 } = storeToRefs(store);
 
 const searchedWord = computed(() => {
@@ -416,9 +439,25 @@ const searchedWord = computed(() => {
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 const anglishExactResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
-const tab = ref("etymonline");
+const tab = ref("wiktionary");  // or "etymonline"
 
 async function refreshSearch() {
+  // console.log("Searching!");
+
+  // if (searchedWord.value in etymologies.value) {
+  //   console.log(`'${searchedWord.value}' is in the etymology list!`);
+  //   console.log(`The etymology is: ${JSON.stringify(etymologies.value[searchedWord.value])}`);
+  // }
+
+  // else {
+  //   tab.value = "etymonline";
+  // }
+
+  tab.value = "wiktionary"; // Reset to default
+
+
+  document.title = `'${searchedWord.value}' - Online Anglish Dictionary`;
+
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
   anglishExactResults.value = structuredClone(emptyAnglishFuzzyResults);
   // delete anglishFuzzyResults.value["IGNORE_ME"];
