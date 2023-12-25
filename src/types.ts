@@ -69,6 +69,13 @@ export interface FalseFriends {
   [friend: string]: string
 }
 
+export interface Etymologies {
+  [word: string]: {
+    "origin": string,
+    "sub_origins": [string],
+  }
+}
+
 /**
  * {
  *  "a": {

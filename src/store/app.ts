@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord, AnglishWordlist, EnglishToAnglish, GermanicDictionary } from '@/types'
+import { AnglishToEnglish, AnglishToEnglishEntry, AnglishWord, AnglishWordlist, EnglishToAnglish, Etymologies, GermanicDictionary } from '@/types'
 import { Ref, ref } from 'vue';
 
 export const useAppStore = defineStore("app", () => {
@@ -16,6 +16,9 @@ export const useAppStore = defineStore("app", () => {
   const anglishWordlistPath = process.env.NODE_ENV === 'production'
   ? "/dictionary/anglish_wordlist.json"
   : "/anglish_wordlist.json";
+  const etymologyPath = process.env.NODE_ENV === 'production'
+  ? "/dictionary/etymology.json"
+  : "/etymology.json";
 
   const anglishToEnglishDictionary: Ref<AnglishToEnglish> = ref({
     "NOT_LOADED": {
@@ -97,12 +100,22 @@ export const useAppStore = defineStore("app", () => {
     })
   });
 
+  const etymologies: Ref<Etymologies> = ref({});
+
+  fetch(etymologyPath).then((a) => {
+    a.json().then((data: Etymologies) => {
+      etymologies.value = data;
+      console.log("Loaded Etymologies!");
+    })
+  });
+
   return {
     anglishToEnglishDictionary,
     englishToAnglishDictionary,
     emptyAnglishToEnglishEntry,
     englishToGermanicDictionary,
     anglishWordlist,
+    etymologies,
     foundWord,
   }
 });
