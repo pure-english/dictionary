@@ -16,7 +16,18 @@
     size="small"
     class="mx-1"
     color="red"
-    v-if="props.language === 'French'"
+    v-else-if="props.language === 'French'"
+  >
+    {{ props.language }}
+  </v-chip>
+
+  <v-chip
+    label
+    flat
+    size="small"
+    class="mx-1"
+    color="red"
+    v-else-if="props.language === 'Romance'"
   >
     {{ props.language }}
   </v-chip>
@@ -27,7 +38,7 @@
     size="small"
     class="mx-1"
     color="orange"
-    v-if="props.language === 'Greek'"
+    v-else-if="props.language === 'Greek'"
   >
     {{ props.language }}
   </v-chip>
@@ -38,7 +49,7 @@
     size="small"
     class="mx-1"
     color="orange"
-    v-if="props.language === 'Norse'"
+    v-else-if="props.language === 'Norse'"
   >
     {{ props.language }}
   </v-chip>
@@ -49,7 +60,7 @@
     size="small"
     class="mx-1"
     color="blue"
-    v-if="props.language === 'Old English'"
+    v-else-if="props.language === 'Old English'"
   >
     {{ props.language }}
   </v-chip>
@@ -60,7 +71,7 @@
     size="small"
     class="mx-1"
     color="yellow-darken-4"
-    v-if="props.language === 'Unknown'"
+    v-else-if="props.language === 'Unknown'"
   >
     {{ props.language }}
   </v-chip>
@@ -71,9 +82,42 @@
     size="small"
     class="mx-1"
     color="yellow-darken-2"
-    v-if="props.language === 'Mixed'"
+    v-else-if="props.language === 'Mixed'"
   >
     {{ props.language }}
+  </v-chip>
+
+  <v-chip
+    label
+    flat
+    size="small"
+    class="mx-1"
+    color="light-green-darken-1"
+    v-else-if="props.language === 'German'"
+  >
+    {{ props.language }}
+  </v-chip>
+
+  <v-chip
+    label
+    flat
+    size="small"
+    class="mx-1"
+    color="green-lighten-1"
+    v-else-if="props.language === 'Germanic'"
+  >
+    {{ props.language }}
+  </v-chip>
+
+  <v-chip
+    label
+    flat
+    size="small"
+    class="mx-1"
+    color="yellow-darken-2"
+    v-else
+  >
+    Other
   </v-chip>
 </template>
 

@@ -2,21 +2,15 @@
 <template>
   <!-- Etymology -->
   <div class="mb-5" width="350">
-    <!-- <v-expansion-panels variant="accordion" width="350">
-      <v-expansion-panel
-        :title="`Etymology of '${searchedWord}'`"
-        width="350"
-      >
-        <v-expansion-panel-text> -->
     <v-card>
       <v-tabs
         v-model="tab"
         bg-color="primary"
       >
         <v-tab value="wiktionary">
-          Wiktionary
+          Overview
         </v-tab>
-        <v-tab value="etymonline">Etymonline</v-tab>
+        <v-tab value="etymonline">Details</v-tab>
         <!-- <v-tab value="OED">OED</v-tab> -->
       </v-tabs>
 
@@ -37,10 +31,17 @@
                 <etymology-chip :language="sub_origin"/>
               </span>
             </p>
+            <p>
+              <sub>
+              This etymology was sourced from Wiktionary. Be sceptical of it.
+              If you must be sure, head to the "Details" tab to verify the
+              information.
+              </sub>
+            </p>
           </v-window-item>
 
           <v-window-item value="wiktionary" v-else>
-            <h4>Could not find '{{ searchedWord }}'. Sorry.</h4>
+            <h4>Could not find the etymology of '{{ searchedWord }}'!</h4>
           </v-window-item>
 
           <v-window-item value="etymonline">
@@ -61,9 +62,6 @@
         </v-window>
       </v-card-text>
     </v-card>
-        <!-- </v-expansion-panel-text>
-      </v-expansion-panel>
-    </v-expansion-panels> -->
   </div>
 
   <!-- False friends -->
