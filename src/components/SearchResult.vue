@@ -370,10 +370,7 @@
     </div>
   </div>
 
-
-    <!-- Germanic-like words from GT -->
-  <!-- </div> -->
-
+  <!-- No results found! -->
   <div v-if="!(searchedWord in englishToGermanicDictionary) &&
   !(searchedWord in englishToAnglishDictionary) &&
   !(searchedWord in anglishToEnglishDictionary) &&
@@ -392,6 +389,8 @@
           "break" instead of "broke".
           "fly" instead of "to fly".
           "good" instead of "better".
+          "realize" instead of "to realize".
+          "car" instead of "a car".
         </p>
 
         <p>
