@@ -11,11 +11,11 @@
 
 ### Editor TODO
 
-- [ ] Function that takes the list of lemmas, gets their etymology and, if the
+- [x] Function that takes the list of lemmas, gets their etymology and, if the
   etymology origin and sub-origin isn't present, add them to a list
 - [x] When a chip is pressed, emit that word up and send it back to the dictionary
-- [ ] Colour chips depending on their etymology
-- [ ] Filter chips, depending on what origin(s) are selected
+- [x] Colour chips depending on their etymology
+- [x] Filter chips, depending on what origin(s) are selected
 
 ## TODO
 

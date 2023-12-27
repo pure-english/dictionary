@@ -1,5 +1,48 @@
 import { FalseFriends } from "./types";
 
+export const originColors = {
+  "Latin": {
+    language: "Latin",
+    color: "#F44336",
+  },
+  "French": {
+    language: "French",
+    color: "#F44336",
+  },
+  "Romance": {
+    language: "Romance",
+    color: "#F44336",
+  },
+  "Greek": {
+    language: "Greek",
+    color: "#FF9800",
+  },
+  "Norse": {
+    language: "Norse",
+    color: "#FF9800",
+  },
+  "Old English": {
+    language: "Old English",
+    color: "#2196F3",
+  },
+  "Unknown": {
+    language: "Unknown",
+    color: "#607D8B",
+  },
+  "Mixed": {
+    language: "Mixed",
+    color: "#FFEB3B",
+  },
+  "German": {
+    language: "German",
+    color: "#7CB342",
+  },
+  "Germanic": {
+    language: "Germanic",
+    color: "#66BB6A",
+  },
+}
+
 export const falseFriends: FalseFriends = {
   "arm": `Means "poor" in all senses. Its likeness to the word for the bodily limb is a coincidence, as is its likeness to "arm" that means "weapon", as that <i>arm</i> is from French and is the source of the "arm" in "firearm".`,
   "boot": `Means "remedy". It is still found in the phrase "to boot". The modern word (referring to footwear) appears to have come from French.`,

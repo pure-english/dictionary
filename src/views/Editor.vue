@@ -1,5 +1,22 @@
 <template>
   <v-container>
+    <!-- Anglish letters -->
+    <v-row v-if="!hideLetters">
+      <v-col>
+        <h4>Anglish Letters</h4>
+        <p>Press to add a letter to your clipboard.</p>
+
+        <v-chip
+          v-for="letter in anglishLetters"
+          :key="letter"
+          @click="copyContent(letter)"
+          class="mr-2"
+        >
+          {{ letter }}
+        </v-chip>
+      </v-col>
+    </v-row>
+
     <v-row justify="center">
       <v-col cols="12">
         <v-textarea
@@ -8,49 +25,8 @@
           v-model="rawText"
         >
         </v-textarea>
-
-        <!-- <input-highlighter
-          style="min-width: 700px; min-height: 300px;"
-          v-model="rawText"
-          :rules="rules"
-          placeholder=""
-        >
-        </input-highlighter> -->
-
-        <!-- <div>
-
-          <highlightInput
-            v-model="rawText"
-            :keywords="[lookupWord]"
-            color="#F56C6C"
-            class="editor-input"
-          >
-          </highlightInput>
-        </div> -->
-
-        <!-- <div class="outer">
-          <div class="inner">
-            <textarea name="" id="" cols="30" rows="10"></textarea>
-          </div>
-
-          <div class="inner">
-            2
-          </div>
-        </div> -->
       </v-col>
     </v-row>
-
-    <!-- <v-row justify="center" style="margin: auto;">
-      <v-col>
-        <div class="d-flex align-center justify-center w-100 h-100">
-          <v-btn
-            @click="analyse()"
-          >
-            Analyse
-          </v-btn>
-        </div>
-      </v-col>
-    </v-row> -->
 
     <!-- Word origin filtering -->
     <!-- Origins -->
@@ -86,7 +62,7 @@
 
         <v-chip-group
           mandatory
-          selected-class="text-primary"
+          selected-class="text-purple"
         >
           <div v-if="(!selectedOrigin) || selectedOrigin === -1">
             <editor-etymology-chip
@@ -145,6 +121,7 @@ const editorStore = useEditorStore();
 const {
   autoSort,
   lookupWord,
+  hideLetters,
 } = storeToRefs(editorStore);
 const appStore = useAppStore();
 const {
@@ -155,8 +132,10 @@ const selectedOrigin = ref(-1);
 const rawText = ref("");
 const chosenLanguage = ref("");
 
+const anglishLetters = ["Þ", "þ", "Ƿ", "ƿ"];
+
 const splitRawText = computed(() => {
-  const words = rawText.value.match(/(\b[^\s]+\b)/g);
+  const words = rawText.value.match(/(Þ*þ*Ƿ*ƿ*\b[^\s]+\bÞ*þ*Ƿ*ƿ*)/g);
   if (autoSort.value) {
     words?.sort();
   }
@@ -229,4 +208,13 @@ watch(sortedWords, async (_oldSortedWords, _newSortedWords) => {
   // console.log(`Watch triggered: ${selectedOrigin.value} > ${newValue} (index of ${chosenLanguage.value})\nkeys = '${Object.keys(sortedWords.value)}'`);
   selectedOrigin.value = newValue;
 });
+
+const copyContent = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log("Content copied to clipboard");
+  } catch (err) {
+    console.error("Failed to copy: ", err);
+  }
+}
 </script>

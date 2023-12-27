@@ -5,10 +5,12 @@
     size="small"
     class="mx-1"
     color="red"
-    style="color: #F44336 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-if="props.language === 'Latin'"
     @click="emitLookup()"
   >
+  <!--
+    style="color: #F44336;" -->
     {{ props.word }}
   </v-chip>
 
@@ -18,7 +20,7 @@
     size="small"
     class="mx-1"
     color="red"
-    style="color: #F44336 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'French'"
     @click="emitLookup()"
   >
@@ -31,7 +33,7 @@
     size="small"
     class="mx-1"
     color="red"
-    style="color: #F44336 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Romance'"
     @click="emitLookup()"
   >
@@ -44,7 +46,7 @@
     size="small"
     class="mx-1"
     color="orange"
-    style="color: #FF9800 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Greek'"
     @click="emitLookup()"
   >
@@ -57,7 +59,7 @@
     size="small"
     class="mx-1"
     color="orange"
-    style="color: #FF9800 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Norse'"
     @click="emitLookup()"
   >
@@ -70,7 +72,7 @@
     size="small"
     class="mx-1"
     color="blue"
-    style="color: #2196F3 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Old English'"
     @click="emitLookup()"
   >
@@ -83,10 +85,12 @@
     size="small"
     class="mx-1"
     color="yellow-darken-4"
-    style="color: #F57F17 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Unknown'"
     @click="emitLookup()"
   >
+  <!--
+    style="color: #F57F17 !important;" -->
     {{ props.word }}
   </v-chip>
 
@@ -96,7 +100,7 @@
     size="small"
     class="mx-1"
     color="yellow-darken-2"
-    style="color: #FBC02D !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Mixed'"
     @click="emitLookup()"
   >
@@ -109,7 +113,7 @@
     size="small"
     class="mx-1"
     color="light-green-darken-1"
-    style="color: #7CB342 !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'German'"
     @click="emitLookup()"
   >
@@ -122,7 +126,7 @@
     size="small"
     class="mx-1"
     color="green-lighten-1"
-    style="color: #66BB6A !important;"
+    :style="`color: ${originColors[props.language].color};`"
     v-else-if="props.language === 'Germanic'"
     @click="emitLookup()"
   >
@@ -135,7 +139,7 @@
     size="small"
     class="mx-1"
     color="yellow-darken-2"
-    style="color: #FBC02D !important;"
+    :style="`color: ${originColors['Unknown'].color};`"
     v-else
     @click="emitLookup()"
   >
@@ -146,6 +150,7 @@
 <script setup lang="ts">
 import { useEditorStore } from '@/store/editor';
 import { storeToRefs } from 'pinia';
+import { originColors } from '@/variables';
 
 const props = defineProps({
   word: String,

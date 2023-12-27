@@ -281,7 +281,8 @@
 
   <!-- Other results -->
   <div
-    v-if="(anglishFuzzyResults &&
+    v-if="!hideOtherResults &&
+    (anglishFuzzyResults &&
     !('IGNORE_ME' in anglishFuzzyResults) &&
     Object.keys(anglishFuzzyResults).length > 0) ||
     (anglishExactResults &&
@@ -403,7 +404,7 @@
           && (getLemmatizedQuery()?.noun != searchedWord
           || getLemmatizedQuery()?.verb != searchedWord
           || getLemmatizedQuery()?.adjective != searchedWord)">
-          <p>Try this/these:</p>
+          <p><u>Try this/these:</u></p>
 
           <p v-if="getLemmatizedQuery()?.noun != searchedWord">
             <b>Noun: </b>

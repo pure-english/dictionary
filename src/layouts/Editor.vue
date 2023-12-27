@@ -22,6 +22,12 @@
       <!-- Emit the value from the Editor view and then send it back down here as a prop? -->
       <search-result
         is-embedded
+        :hide-etymology="hideEtymology"
+        :hide-false-friends="hideFalseFriends"
+        :hide-germanic-alternatives="hideGermanicAlternatives"
+        :hide-anglish-alternatives="hideAnglishAlternatives"
+        :hide-anglish-words="hideAnglishWords"
+        :hide-other-results="hideOtherResults"
         :word="lookupWord"
         class="bg-grey-lighten-3"
       />
@@ -59,13 +65,14 @@
           activator="parent"
           width="auto"
         >
-          <v-card class="mx-auto">
+          <v-card style="max-width: 340px;">
             <v-card-item>
               <v-card-title>Settings</v-card-title>
             </v-card-item>
 
             <v-card-text>
-              <p>Here are where your settings will be.</p>
+              <p>Change these as you see fit. They will not persist between
+              sessions, for now.</p>
 
               <v-form>
                 <!--
@@ -78,14 +85,51 @@
                   label="Auto Sort Words"
                   v-model="autoSort"
                 />
+
+                <v-checkbox
+                  label="Hide Letters"
+                  v-model="hideLetters"
+                />
+
+                <b>Dictionary</b>
+
+                <v-checkbox
+                  label="Hide Etymology"
+                  v-model="hideEtymology"
+                ></v-checkbox>
+
+                <v-checkbox
+                  label="Hide False Friends"
+                  v-model="hideFalseFriends"
+                ></v-checkbox>
+
+                <v-checkbox
+                  label="Hide Germanic Alternatives"
+                  v-model="hideGermanicAlternatives"
+                ></v-checkbox>
+
+                <v-checkbox
+                  label="Hide Anglish Alternatives"
+                  v-model="hideAnglishAlternatives"
+                ></v-checkbox>
+
+                <v-checkbox
+                  label="Hide Anglish Words"
+                  v-model="hideAnglishWords"
+                ></v-checkbox>
+
+                <v-checkbox
+                  label="Hide Other Results"
+                  v-model="hideOtherResults"
+                ></v-checkbox>
               </v-form>
             </v-card-text>
 
-            <v-card-actions>
+            <!-- <v-card-actions>
               <v-btn>
                 Save permanently (TODO)
               </v-btn>
-            </v-card-actions>
+            </v-card-actions> -->
           </v-card>
         </v-dialog>
       </v-app-bar-nav-icon>
@@ -128,7 +172,14 @@ const {
   autoSort,
   dictionarySearch,
   searchDrawer,
+  hideEtymology,
+  hideFalseFriends,
+  hideGermanicAlternatives,
+  hideAnglishAlternatives,
+  hideAnglishWords,
+  hideOtherResults,
+  hideLetters,
 } = storeToRefs(store);
 
-document.title = "Online Anglish Editor";
+document.title = "Anglish Editor";
 </script>
