@@ -50,7 +50,9 @@
 
           <v-window-item value="wiktionary" v-else>
             <h4>Could not find the etymology of '{{ searchedWord }}'!</h4>
-            <p>Some Wiktionary words are made up of parts, such as </p>
+            <p>Some Wiktionary words are made up of parts, such as 'really'
+            being <i>real</i> + <i>-ly</i>. Try to search up those
+            separately.</p>
           </v-window-item>
 
           <v-window-item value="etymonline">
@@ -547,8 +549,9 @@ async function refreshSearch() {
 
   tab.value = "wiktionary"; // Reset to default
 
-
-  document.title = `'${searchedWord.value}' - Online Anglish Dictionary`;
+  if (!props.isEmbedded) {
+    document.title = `'${searchedWord.value}' - Online Anglish Dictionary`;
+  }
 
   anglishFuzzyResults.value = structuredClone(emptyAnglishFuzzyResults);
   anglishExactResults.value = structuredClone(emptyAnglishFuzzyResults);
@@ -647,7 +650,9 @@ onMounted(async () => {
   console.log("Mounted!");
   refreshSearch();
 
-  document.title = `'${searchedWord.value}' - Online Anglish Dictionary`;
+  if (!props.isEmbedded) {
+    document.title = `'${searchedWord.value}' - Online Anglish Dictionary`;
+  }
 
   const searchBar = document.getElementById("searchBar");
   window.addEventListener("keyup", (e) => {

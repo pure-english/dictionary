@@ -130,4 +130,5 @@ const {
   searchDrawer,
 } = storeToRefs(store);
 
+document.title = "Online Anglish Editor";
 </script>
