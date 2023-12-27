@@ -16,7 +16,8 @@
           placeholder=""
         >
         </input-highlighter> -->
-        <div>
+
+        <!-- <div>
 
           <highlightInput
             v-model="rawText"
@@ -25,6 +26,14 @@
             class="editor-input"
           >
           </highlightInput>
+        </div> -->
+
+        <div class="outer">
+          <div class="inner">1</div>
+          <div class="inner">2</div>
+          <div class="inner">3</div>
+          <div class="inner">4</div>
+          <div class="inner">7</div>
         </div>
       </v-col>
     </v-row>
@@ -138,5 +147,9 @@ function analyse() {
   overflow-wrap: normal;
   display: flex;
   flex-grow: 1;
+}
+
+.inner {
+  position: absolute;
 }
 </style>
