@@ -397,6 +397,28 @@
       <div id="not-found">
         <p>We're sorry, but '{{ searchedWord }}' could not be found.</p>
 
+        <div v-if="getLemmatizedQuery()
+          && (getLemmatizedQuery()?.noun != searchedWord
+          || getLemmatizedQuery()?.verb != searchedWord
+          || getLemmatizedQuery()?.adjective != searchedWord)">
+          <p>Try this/these:</p>
+
+          <p v-if="getLemmatizedQuery()?.noun != searchedWord">
+            <b>Noun: </b>
+            {{ getLemmatizedQuery()?.noun }}
+          </p>
+
+          <p v-if="getLemmatizedQuery()?.verb != searchedWord">
+            <b>Verb: </b>
+            {{ getLemmatizedQuery()?.verb }}
+          </p>
+
+          <p v-if="getLemmatizedQuery()?.adjective != searchedWord">
+            <b>Adjective: </b>
+            {{ getLemmatizedQuery()?.adjective }}
+          </p>
+        </div>
+
         <p>Try to search using only a lemma/the dictionary form of words.</p>
 
         <p>
@@ -407,36 +429,6 @@
           "realize" instead of "to realize".
           "car" instead of "a car".
         </p>
-
-        <div v-if="getLemmatizedQuery()
-          && (getLemmatizedQuery()?.noun != searchedWord
-          || getLemmatizedQuery()?.verb != searchedWord
-          || getLemmatizedQuery()?.adjective != searchedWord)">
-          <p>Try these lemmas:</p>
-          <ul>
-            <li v-if="getLemmatizedQuery()?.noun != searchedWord">
-              <b>Noun: </b>
-              <v-chip @click="router.push({
-                path: '/search',
-                query: { word: getLemmatizedQuery()?.noun
-              } })">
-                {{ getLemmatizedQuery()?.noun }}
-              </v-chip>
-            </li>
-
-            <li v-if="getLemmatizedQuery()?.verb != searchedWord">
-              <b>Verb: </b>
-              <v-chip @click="searchedWord = getLemmatizedQuery()?.verb ?? ''">
-                {{ getLemmatizedQuery()?.verb }}
-              </v-chip>
-            </li>
-
-            <li v-if="getLemmatizedQuery()?.adjective != searchedWord">
-              <b>Adjective: </b>
-              {{ getLemmatizedQuery()?.adjective }}
-            </li>
-          </ul>
-        </div>
 
         <p>
           Keep in mind regional spelling differences:
@@ -474,6 +466,10 @@ const {
   englishToGermanicDictionary,
   etymologies,
 } = storeToRefs(store);
+
+const route = useRoute();
+// const router = useRouter();
+const instance = getCurrentInstance();
 
 // The default of these, if not passed down, will be false. This is intended
 // behaviour.
@@ -675,10 +671,6 @@ onMounted(async () => {
   //   etymologyIFrame.value?.contentWindow?.scrollBy(0, 444);
   // };
 });
-
-const route = useRoute();
-const router = useRouter();
-const instance = getCurrentInstance();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(route, (_to, _from) => {

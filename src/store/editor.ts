@@ -6,10 +6,12 @@ export const useEditorStore = defineStore("editor", () => {
 
   const autoSort = ref(false);
   const autoAnalyse = ref(false);
+  const dictionarySearch = ref("");
 
   return {
     lookupWord,
     autoSort,
     autoAnalyse,
+    dictionarySearch,
   }
 });

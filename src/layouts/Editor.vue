@@ -10,6 +10,15 @@
       location="right"
       width="450"
     >
+      <v-text-field
+        label="Dictionary search"
+        style="overflow: hidden;"
+        v-model="dictionarySearch"
+        append-inner-icon="mdi-search"
+        @keydown.enter="lookupWord = dictionarySearch"
+      >
+      </v-text-field>
+
       <!-- Emit the value from the Editor view and then send it back down here as a prop? -->
       <search-result
         is-embedded
@@ -122,6 +131,7 @@ const {
   lookupWord,
   autoSort,
   autoAnalyse,
+  dictionarySearch,
 } = storeToRefs(store);
 
 </script>

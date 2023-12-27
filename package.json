@@ -9,6 +9,7 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@leyton-techlab/vue-input-highlighter": "^0.0.6",
     "@mdi/font": "7.0.96",
     "core-js": "^3.29.0",
     "fuse.js": "^7.0.0",
@@ -16,6 +17,7 @@
     "roboto-fontface": "*",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
+    "vue3-highlight-input": "^1.0.11",
     "vuetify": "^3.0.0",
     "wink-lemmatizer": "^3.0.4"
   },

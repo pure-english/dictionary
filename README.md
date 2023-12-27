@@ -7,14 +7,15 @@
 - [ ] Anglish spelling (and Norse and French) iframes in the sidebar
 - [ ] Option menu to hide specific stuff in the searches
 - [ ] Ability to put in Thorn and Wynn, lowercase and uppercase, via buttons
+- [ ] Runes Translator
 
 ### Editor TODO
 
-* Function that takes the list of lemmas, gets their etymology and, if the
+- [ ] Function that takes the list of lemmas, gets their etymology and, if the
   etymology origin and sub-origin isn't present, add them to a list
-* When a chip is pressed, emit that word up and send it back to the dictionary
-* Colour chips depending on their etymology
-* Filter chips, depending on what origin(s) are selected
+- [x] When a chip is pressed, emit that word up and send it back to the dictionary
+- [ ] Colour chips depending on their etymology
+- [ ] Filter chips, depending on what origin(s) are selected
 
 ## TODO
 
