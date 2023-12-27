@@ -443,7 +443,9 @@ const {
 
 // The default of these, if not passed down, will be false. This is intended
 // behaviour.
-defineProps({
+const props = defineProps({
+  isEmbedded: Boolean,
+  word: String,
   hideEtymology: Boolean,
   hideFalseFriends: Boolean,
   hideGermanicAlternatives: Boolean,
@@ -453,6 +455,11 @@ defineProps({
 });
 
 const searchedWord = computed(() => {
+  if (props.isEmbedded) {
+    return props.word ?? "";
+  }
+
+  // If it's not embedded, return the route word
   return route.query.word?.toString() ?? '';
 });
 
