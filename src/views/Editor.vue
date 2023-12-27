@@ -24,6 +24,7 @@
           variant="outlined"
           counter
           v-model="rawText"
+          id="user-input"
         >
         </v-textarea>
       </v-col>
@@ -61,6 +62,7 @@
     <v-row v-if="splitRawText.length > 0">
       <v-col>
         <h4>Words</h4>
+        <p>Press on a word to search the dictionary.</p>
 
         <v-chip-group
           mandatory
@@ -189,9 +191,14 @@ const sortedWords = computed(() => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(sortedWords, async (_oldSortedWords, _newSortedWords) => {
-  const newValue = Object.keys(sortedWords.value).indexOf(chosenLanguage.value);
+  const userInput = document.getElementById("user-input");
+
+  if (!(userInput === document.activeElement && selectedOrigin.value)) {
+    const newValue = Object.keys(sortedWords.value).indexOf(chosenLanguage.value);
+    selectedOrigin.value = newValue;
+  }
   // console.log(`Watch triggered: ${selectedOrigin.value} > ${newValue} (index of ${chosenLanguage.value})\nkeys = '${Object.keys(sortedWords.value)}'`);
-  selectedOrigin.value = newValue;
+
 });
 
 const copyContent = async (text: string) => {

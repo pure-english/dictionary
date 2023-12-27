@@ -13,9 +13,23 @@
 
 - [x] Function that takes the list of lemmas, gets their etymology and, if the
   etymology origin and sub-origin isn't present, add them to a list
-- [x] When a chip is pressed, emit that word up and send it back to the dictionary
+- [x] When a chip is pressed, emit that word up and send it back to the
+  dictionary
 - [x] Colour chips depending on their etymology
 - [x] Filter chips, depending on what origin(s) are selected
+- [ ] Statistics on what percentage is Romance, what percentage Germanic, etc
+    * Perhaps include "Old English" in the score, but remove any Germanic
+      scores (by stopping them from being added in the first place) that also
+      have Old English. Therefore, it only counts Germanic words that aren't
+      from Old English. Put Norse words there too, maybe.
+- [ ] Add a search button inside of the search
+
+### Editor errors
+
+- [ ] Fix first word chip being a yellow colour always
+- [ ] Fix picking the first Origin resulting in nothing happening
+- [ ] If you unselect a word origin and then begin to type, should the origins
+  shuffle around it will reselect said word origin
 
 ## TODO
 
