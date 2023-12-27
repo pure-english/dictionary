@@ -408,6 +408,15 @@
           "car" instead of "a car".
         </p>
 
+        <div v-if="getLemmatizedQuery()">
+          <p>Try these lemmas:</p>
+          <ul>
+            <li><b>Noun: </b> {{ getLemmatizedQuery()?.noun }}</li>
+            <li><b>Verb: </b> {{ getLemmatizedQuery()?.verb }}</li>
+            <li><b>Adjective: </b> {{ getLemmatizedQuery()?.adjective }}</li>
+          </ul>
+        </div>
+
         <p>
           Keep in mind regional spelling differences:
           <br/><br/>
@@ -433,6 +442,7 @@ import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { falseFriends } from "@/variables";
+import lemmatize from "wink-lemmatizer";
 
 import Etymology from "@/components/Etymology.vue";
 
@@ -472,6 +482,28 @@ watch(searchedWord, async (_oldSearchedWord, _newSearchedWord) => {
     refreshSearch();
   }
 });
+
+function getLemmatizedQuery() {
+  const noun = lemmatize.noun(searchedWord.value);
+  const verb = lemmatize.verb(searchedWord.value);
+  const adjective = lemmatize.adjective(searchedWord.value);
+
+  if (!noun && !verb && !adjective) {
+    return null;
+  }
+
+  const result: {
+    noun: string;
+    verb: string;
+    adjective: string;
+  } = {
+    noun: noun,
+    verb: verb,
+    adjective: adjective,
+  }
+
+  return result;
+}
 
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
