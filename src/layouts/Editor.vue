@@ -18,37 +18,71 @@
     </v-navigation-drawer>
 
     <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer"/>
+      <v-app-bar-nav-icon @click="drawer = !drawer">
+        <v-icon>$menu</v-icon>
+
+        <v-tooltip
+          activator="parent"
+          location="start"
+        >
+          Open Sidebar
+        </v-tooltip>
+      </v-app-bar-nav-icon>
 
       <v-app-bar-title>Anglish Editor</v-app-bar-title>
 
       <v-spacer></v-spacer>
 <!--
         @click="settings = !settings" -->
-      <v-app-bar-nav-icon
-        icon="mdi-cog"
-      >
+      <v-app-bar-nav-icon>
+        <v-icon>mdi-cog</v-icon>
+
+        <v-tooltip
+          activator="parent"
+          location="start"
+        >
+          Settings
+        </v-tooltip>
+
         <v-dialog
           v-model="settings"
           activator="parent"
           width="auto"
         >
-          <v-card>
+          <v-card class="mx-auto">
             <v-card-item>
               <v-card-title>Settings</v-card-title>
             </v-card-item>
 
             <v-card-text>
-              Here are where your settings will be.
+              <p>Here are where your settings will be.</p>
+
+              <v-checkbox
+                label="Auto-Analyse"
+                v-model="autoAnalyse"
+              />
             </v-card-text>
+
+            <v-card-actions>
+              <v-btn>
+                Save permanently (TODO)
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-dialog>
       </v-app-bar-nav-icon>
 
       <v-app-bar-nav-icon
         @click="searchDrawer = !searchDrawer"
-        icon="mdi-magnify"
-      />
+      >
+        <v-icon>mdi-magnify</v-icon>
+        <v-tooltip
+          activator="parent"
+          location="start"
+        >
+          Open Dictionary
+        </v-tooltip>
+      </v-app-bar-nav-icon>
     </v-app-bar>
 
     <!-- Flex 'align-center' puts it vertically central -->
@@ -66,8 +100,16 @@
 import { ref } from "vue";
 import Editor from "@/views/Editor.vue";
 import SearchResult from "@/components/SearchResult.vue";
+import { useEditorStore } from "@/store/editor";
+import { storeToRefs } from "pinia";
 
 const drawer = ref(true);
 const searchDrawer = ref(true);
 const settings = ref(false);
+
+const store = useEditorStore();
+const {
+  autoAnalyse,
+} = storeToRefs(store);
+
 </script>
