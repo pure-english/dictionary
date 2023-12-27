@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/no-unused-vars -->
 <template>
   <!-- Etymology -->
-  <div class="mb-5" width="350">
+  <div class="mb-5" width="350" v-if="!hideEtymology">
     <v-card>
       <v-tabs
         v-model="tab"
@@ -16,37 +16,41 @@
 
       <v-card-text>
         <v-window v-model="tab">
-          <v-window-item value="wiktionary" v-if="searchedWord in etymologies">
-            <etymology :searched-word="searchedWord" :etymologies="etymologies"/>
+          <v-window-item
+            value="wiktionary"
+            v-if="searchedWord in etymologies"
+          >
+            <etymology
+              :searched-word="searchedWord"
+              :etymologies="etymologies"
+            />
           </v-window-item>
 
           <!-- Lowercase alternative -->
-          <v-window-item value="wiktionary" v-else-if="searchedWord.toLowerCase() in etymologies">
-            <h2>{{ searchedWord.toLowerCase() }}</h2>
-            <p>
-              <b>Origin: </b>
-              <etymology-chip :language="etymologies[searchedWord.toLowerCase()].origin"/>
-            </p>
-            <p v-if="etymologies[searchedWord.toLowerCase()].sub_origins.length > 1">
-              <b>Sub-origins:</b>
-              <span
-                v-for="(sub_origin, index) in etymologies[searchedWord.toLowerCase()].sub_origins"
-                :key="index"
-              >
-                <etymology-chip :language="sub_origin"/>
-              </span>
-            </p>
-            <p>
-              <sub>
-              This etymology was sourced from Wiktionary. Be sceptical of it.
-              If you must be sure, head to the "Details" tab to verify the
-              information.
-              </sub>
-            </p>
+          <v-window-item
+            value="wiktionary"
+            v-else-if="searchedWord.toLowerCase() in etymologies"
+          >
+            <etymology
+              :searched-word="searchedWord.toLowerCase()"
+              :etymologies="etymologies"
+            />
+          </v-window-item>
+
+          <!-- Title case alternative -->
+          <v-window-item
+            value="wiktionary"
+            v-else-if="toTitleCase(searchedWord) in etymologies"
+          >
+            <etymology
+              :searched-word="toTitleCase(searchedWord)"
+              :etymologies="etymologies"
+            />
           </v-window-item>
 
           <v-window-item value="wiktionary" v-else>
             <h4>Could not find the etymology of '{{ searchedWord }}'!</h4>
+            <p>Some Wiktionary words are made up of parts, such as </p>
           </v-window-item>
 
           <v-window-item value="etymonline">
@@ -71,7 +75,7 @@
 
   <!-- False friends -->
   <div
-    v-if="searchedWord.toLowerCase() in (falseFriends ?? {})"
+    v-if="!hideFalseFriends && (searchedWord.toLowerCase() in (falseFriends ?? {}))"
     class="mb-6"
   >
     <h2><u><center>False Friend</center></u></h2>
@@ -91,9 +95,10 @@
 
   <!-- Germanic English alternatives -->
   <div
-    v-if="searchedWord in englishToGermanicDictionary ||
+    v-if="!hideGermanicAlternatives &&
+    (searchedWord in englishToGermanicDictionary ||
     searchedWord.toLowerCase() in englishToGermanicDictionary ||
-    toTitleCase(searchedWord) in englishToGermanicDictionary"
+    toTitleCase(searchedWord) in englishToGermanicDictionary)"
     class="mb-8"
   >
     <h2><u><center>Germanic English Alternatives</center></u></h2>
@@ -177,9 +182,10 @@
   </div>
 
   <!-- Anglish Alternatives -->
-  <div v-if="searchedWord in englishToAnglishDictionary ||
+  <div v-if="!hideAnglishAlternatives &&
+    (searchedWord in englishToAnglishDictionary ||
     searchedWord.toLowerCase() in englishToAnglishDictionary ||
-    toTitleCase(searchedWord) in englishToAnglishDictionary">
+    toTitleCase(searchedWord) in englishToAnglishDictionary)">
     <h2><u><center>Anglish Alternatives</center></u></h2>
     <!--
       v-for="(words, pos) in englishToAnglishDictionary[searchedWord]"
@@ -226,9 +232,10 @@
   </div>
 
   <!-- Anglish Words -->
-  <div v-if="searchedWord in anglishToEnglishDictionary ||
+  <div v-if="!hideAnglishWords &&
+    (searchedWord in anglishToEnglishDictionary ||
     searchedWord.toLowerCase() in anglishToEnglishDictionary ||
-    toTitleCase(searchedWord) in anglishToEnglishDictionary">
+    toTitleCase(searchedWord) in anglishToEnglishDictionary)">
     <h2><u><center>Anglish Words</center></u></h2>
 
     <!-- anglishToEnglishDictionary[searchedWord] -->
@@ -433,6 +440,17 @@ const {
   englishToGermanicDictionary,
   etymologies,
 } = storeToRefs(store);
+
+// The default of these, if not passed down, will be false. This is intended
+// behaviour.
+defineProps({
+  hideEtymology: Boolean,
+  hideFalseFriends: Boolean,
+  hideGermanicAlternatives: Boolean,
+  hideAnglishAlternatives: Boolean,
+  hideAnglishWords: Boolean,
+  hideOtherResults: Boolean,
+});
 
 const searchedWord = computed(() => {
   return route.query.word?.toString() ?? '';
