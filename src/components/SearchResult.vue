@@ -453,7 +453,7 @@ import { storeToRefs } from "pinia";
 import { onMounted, toRaw, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { falseFriends } from "@/variables";
 import lemmatize from "wink-lemmatizer";
 

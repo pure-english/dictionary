@@ -68,11 +68,11 @@
               <p>Here are where your settings will be.</p>
 
               <v-form>
-
+                <!--
                 <v-checkbox
                   label="Auto-Analyse"
                   v-model="autoAnalyse"
-                />
+                /> -->
 
                 <v-checkbox
                   label="Auto Sort Words"
@@ -104,9 +104,6 @@
       </v-app-bar-nav-icon>
     </v-app-bar>
 
-    <!-- Flex 'align-center' puts it vertically central -->
-    <!--
-      class="d-flex justify-center flex-grow-1" -->
     <v-main
       style="min-height: 300px;"
     >
@@ -130,7 +127,6 @@ const store = useEditorStore();
 const {
   lookupWord,
   autoSort,
-  autoAnalyse,
   dictionarySearch,
 } = storeToRefs(store);
 

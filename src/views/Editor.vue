@@ -40,7 +40,7 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" style="margin: auto;">
+    <!-- <v-row justify="center" style="margin: auto;">
       <v-col>
         <div class="d-flex align-center justify-center w-100 h-100">
           <v-btn
@@ -50,7 +50,7 @@
           </v-btn>
         </div>
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <!-- Word origin filtering -->
     <!-- Origins -->
@@ -60,10 +60,11 @@
 
         <!-- multiple -->
         <v-chip-group
+          v-model="selectedOrigin"
           column
         >
           <v-chip
-            v-for="(origin, index) in ['Norse', 'Old English']"
+            v-for="(origin, index) in Object.keys(sortedWords)"
             :key="index"
             filter
             outlined
@@ -87,12 +88,17 @@
           selected-class="text-primary"
         >
           <editor-etymology-chip
-            v-for="(word, index) in textWithEtymology"
+            v-for="(word, index) in sortedWords[Object.keys(sortedWords)[selectedOrigin]]"
             :key="index"
+            @lookup="lookupWord = word"
+            :word="word"
+            :language="Object.keys(sortedWords)[selectedOrigin]"
+          >
+            <!--
             @lookup="lookupWord = word.word"
             :word="word.word"
             :language="word.origin"
-          >
+             -->
           </editor-etymology-chip>
 
           <!-- <v-chip
@@ -117,6 +123,7 @@ import { ref } from "vue";
 
 import EditorEtymologyChip from "@/components/EditorEtymologyChip.vue";
 
+const selectedOrigin = ref();
 const rawText = ref("");
 const splitRawText = computed(() => {
   const words = rawText.value.match(/(\b[^\s]+\b)/g);
@@ -148,10 +155,42 @@ const textWithEtymology = computed(() => {
 
   return words;
 });
+const sortedWords = computed(() => {
+  const sorted: {
+    [origin: string]: Array<string>,
+  } = {};
+
+  textWithEtymology.value.map((word) => {
+    if (word.origin) {
+      if (word.origin in sorted) {
+        if (!(word.word in sorted[word.origin])) {
+          sorted[word.origin].push(word.word);
+        }
+      } else {
+        sorted[word.origin] = [word.word];
+      }
+    }
+
+    if (word.sub_origins) {
+      for (const subOrigin of word.sub_origins) {
+        if (subOrigin) {
+          if (subOrigin in sorted) {
+            if (!(word.word in sorted[subOrigin])) {
+              sorted[subOrigin].push(word.word);
+            }
+          } else {
+            sorted[subOrigin] = [word.word];
+          }
+        }
+      }
+    }
+  });
+
+  return sorted;
+});
 
 const editorStore = useEditorStore();
 const {
-  autoAnalyse,
   autoSort,
   lookupWord,
 } = storeToRefs(editorStore);
@@ -159,17 +198,6 @@ const appStore = useAppStore();
 const {
   etymologies,
 } = storeToRefs(appStore);
-
-function analyse() {
-  console.log("Analysing input…");
-
-  if (autoAnalyse.value) {
-    console.log("(Did this automatically)");
-  }
-
-  console.log(`Text: ${rawText.value}`);
-  console.log(`Split text: ${splitRawText.value}`);
-}
 </script>
 
 <style scoped>
