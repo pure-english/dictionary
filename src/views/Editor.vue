@@ -27,6 +27,8 @@
     <!-- v-row -->
     <v-row>
       <v-col>
+        <h4>Origins</h4>
+
         <v-chip-group
           column
           multiple
@@ -47,11 +49,17 @@
     <!-- List of words with highlighting -->
     <v-row>
       <v-col>
+        <h4>Words</h4>
+
         <v-chip-group
           mandatory
           selected-class="text-primary"
         >
-          <v-chip v-for="(word, index) in splitRawText" :key="index">
+          <v-chip
+            v-for="(word, index) in splitRawText"
+            :key="index"
+            @click="lookupWord = word"
+          >
             {{ word }}
           </v-chip>
         </v-chip-group>
@@ -66,6 +74,8 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { ref } from "vue";
 
+const emit = defineEmits(['lookup']);
+
 const rawText = ref("");
 const splitRawText = computed(() => {
   return [...new Set(rawText.value.match(/(\b[^\s]+\b)/g)?.sort())];
@@ -74,6 +84,7 @@ const splitRawText = computed(() => {
 const store = useEditorStore();
 const {
   autoAnalyse,
+  lookupWord,
 } = storeToRefs(store);
 
 function analyse() {
@@ -84,6 +95,6 @@ function analyse() {
   }
 
   console.log(`Text: ${rawText.value}`);
-  console.log(`Split text: ${splitRawText.value}`)
+  console.log(`Split text: ${splitRawText.value}`);
 }
 </script>

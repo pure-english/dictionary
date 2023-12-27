@@ -279,9 +279,12 @@
 
   <!-- Other results -->
   <div
-    v-if="anglishFuzzyResults &&
+    v-if="(anglishFuzzyResults &&
     !('IGNORE_ME' in anglishFuzzyResults) &&
-    Object.keys(anglishFuzzyResults).length > 0"
+    Object.keys(anglishFuzzyResults).length > 0) ||
+    (anglishExactResults &&
+    !('IGNORE_ME' in anglishExactResults) &&
+    Object.keys(anglishExactResults).length > 0)"
   >
     <h2><u><center>Other Results</center></u></h2>
     <!-- Fuzzy search of Germanic Thesaurus -->

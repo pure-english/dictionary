@@ -8,6 +8,14 @@
 - [ ] Option menu to hide specific stuff in the searches
 - [ ] Ability to put in Thorn and Wynn, lowercase and uppercase, via buttons
 
+### Editor TODO
+
+* Function that takes the list of lemmas, gets their etymology and, if the
+  etymology origin and sub-origin isn't present, add them to a list
+* When a chip is pressed, emit that word up and send it back to the dictionary
+* Colour chips depending on their etymology
+* Filter chips, depending on what origin(s) are selected
+
 ## TODO
 
 - [x] Fix duplicates of search due to second Anglish spellings

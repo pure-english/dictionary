@@ -4,6 +4,7 @@
       <!--  -->
     </v-navigation-drawer>
 
+    <!-- Dictionary/Search -->
     <v-navigation-drawer
       v-model="searchDrawer"
       location="right"
@@ -12,7 +13,7 @@
       <!-- Emit the value from the Editor view and then send it back down here as a prop? -->
       <search-result
         is-embedded
-        word="realize"
+        :word="lookupWord"
         class="bg-grey-lighten-3"
       />
     </v-navigation-drawer>
@@ -32,8 +33,8 @@
       <v-app-bar-title>Anglish Editor</v-app-bar-title>
 
       <v-spacer></v-spacer>
-<!--
-        @click="settings = !settings" -->
+
+      <!-- Settings -->
       <v-app-bar-nav-icon>
         <v-icon>mdi-cog</v-icon>
 
@@ -72,6 +73,7 @@
         </v-dialog>
       </v-app-bar-nav-icon>
 
+      <!-- Dictionary/Search button -->
       <v-app-bar-nav-icon
         @click="searchDrawer = !searchDrawer"
       >
@@ -109,6 +111,7 @@ const settings = ref(false);
 
 const store = useEditorStore();
 const {
+  lookupWord,
   autoAnalyse,
 } = storeToRefs(store);
 
