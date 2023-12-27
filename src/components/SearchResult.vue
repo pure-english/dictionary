@@ -40,6 +40,31 @@
             </p>
           </v-window-item>
 
+          <!-- Lowercase alternative -->
+          <v-window-item value="wiktionary" v-else-if="searchedWord.toLowerCase() in etymologies">
+            <h2>{{ searchedWord.toLowerCase() }}</h2>
+            <p>
+              <b>Origin: </b>
+              <etymology-chip :language="etymologies[searchedWord.toLowerCase()].origin"/>
+            </p>
+            <p v-if="etymologies[searchedWord.toLowerCase()].sub_origins.length > 1">
+              <b>Sub-origins:</b>
+              <span
+                v-for="(sub_origin, index) in etymologies[searchedWord.toLowerCase()].sub_origins"
+                :key="index"
+              >
+                <etymology-chip :language="sub_origin"/>
+              </span>
+            </p>
+            <p>
+              <sub>
+              This etymology was sourced from Wiktionary. Be sceptical of it.
+              If you must be sure, head to the "Details" tab to verify the
+              information.
+              </sub>
+            </p>
+          </v-window-item>
+
           <v-window-item value="wiktionary" v-else>
             <h4>Could not find the etymology of '{{ searchedWord }}'!</h4>
           </v-window-item>
