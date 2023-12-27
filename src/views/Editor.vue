@@ -49,7 +49,7 @@
     <!-- Sub-origins -->
 
     <!-- List of words with highlighting -->
-    <v-row>
+    <v-row v-if="splitRawText.length > 0">
       <v-col>
         <h4>Words</h4>
 
@@ -76,16 +76,19 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { ref } from "vue";
 
-const emit = defineEmits(['lookup']);
-
 const rawText = ref("");
 const splitRawText = computed(() => {
-  return [...new Set(rawText.value.match(/(\b[^\s]+\b)/g)?.sort())];
+  const words = rawText.value.match(/(\b[^\s]+\b)/g);
+  if (autoSort.value) {
+    words?.sort();
+  }
+  return [...new Set(words)];
 });
 
 const store = useEditorStore();
 const {
   autoAnalyse,
+  autoSort,
   lookupWord,
 } = storeToRefs(store);
 

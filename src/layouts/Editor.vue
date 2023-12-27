@@ -58,10 +58,18 @@
             <v-card-text>
               <p>Here are where your settings will be.</p>
 
-              <v-checkbox
-                label="Auto-Analyse"
-                v-model="autoAnalyse"
-              />
+              <v-form>
+
+                <v-checkbox
+                  label="Auto-Analyse"
+                  v-model="autoAnalyse"
+                />
+
+                <v-checkbox
+                  label="Auto Sort Words"
+                  v-model="autoSort"
+                />
+              </v-form>
             </v-card-text>
 
             <v-card-actions>
@@ -112,6 +120,7 @@ const settings = ref(false);
 const store = useEditorStore();
 const {
   lookupWord,
+  autoSort,
   autoAnalyse,
 } = storeToRefs(store);
 

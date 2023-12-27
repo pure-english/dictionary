@@ -408,12 +408,33 @@
           "car" instead of "a car".
         </p>
 
-        <div v-if="getLemmatizedQuery()">
+        <div v-if="getLemmatizedQuery()
+          && (getLemmatizedQuery()?.noun != searchedWord
+          || getLemmatizedQuery()?.verb != searchedWord
+          || getLemmatizedQuery()?.adjective != searchedWord)">
           <p>Try these lemmas:</p>
           <ul>
-            <li><b>Noun: </b> {{ getLemmatizedQuery()?.noun }}</li>
-            <li><b>Verb: </b> {{ getLemmatizedQuery()?.verb }}</li>
-            <li><b>Adjective: </b> {{ getLemmatizedQuery()?.adjective }}</li>
+            <li v-if="getLemmatizedQuery()?.noun != searchedWord">
+              <b>Noun: </b>
+              <v-chip @click="router.push({
+                path: '/search',
+                query: { word: getLemmatizedQuery()?.noun
+              } })">
+                {{ getLemmatizedQuery()?.noun }}
+              </v-chip>
+            </li>
+
+            <li v-if="getLemmatizedQuery()?.verb != searchedWord">
+              <b>Verb: </b>
+              <v-chip @click="searchedWord = getLemmatizedQuery()?.verb ?? ''">
+                {{ getLemmatizedQuery()?.verb }}
+              </v-chip>
+            </li>
+
+            <li v-if="getLemmatizedQuery()?.adjective != searchedWord">
+              <b>Adjective: </b>
+              {{ getLemmatizedQuery()?.adjective }}
+            </li>
           </ul>
         </div>
 
@@ -440,7 +461,7 @@ import { storeToRefs } from "pinia";
 import { onMounted, toRaw, watch } from "vue";
 import { getCurrentInstance } from "vue";
 import { Ref, computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { falseFriends } from "@/variables";
 import lemmatize from "wink-lemmatizer";
 
@@ -467,13 +488,19 @@ const props = defineProps({
   hideOtherResults: Boolean,
 });
 
-const searchedWord = computed(() => {
-  if (props.isEmbedded) {
-    return props.word ?? "";
-  }
+const searchedWord = computed({
+  // getter
+  get() {
+    if (props.isEmbedded) {
+      return props.word ?? "";
+    }
 
-  // If it's not embedded, return the route word
-  return route.query.word?.toString() ?? '';
+    // If it's not embedded, return the route word
+    return route.query.word?.toString() ?? '';
+  },
+  set(newValue) {
+    route.query.word = newValue;
+  },
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -650,6 +677,7 @@ onMounted(async () => {
 });
 
 const route = useRoute();
+const router = useRouter();
 const instance = getCurrentInstance();
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
