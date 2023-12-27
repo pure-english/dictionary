@@ -69,6 +69,7 @@
             filter
             outlined
             variant="outlined"
+            @click="chosenLanguage = origin"
           >
             {{ origin }}
           </v-chip>
@@ -99,11 +100,11 @@
 
           <div v-else>
             <editor-etymology-chip
-              v-for="(word, index) in sortedWords[Object.keys(sortedWords)[selectedOrigin]]"
+              v-for="(word, index) in sortedWords[chosenLanguage]"
               :key="index"
               @lookup="lookupWord = word"
               :word="word"
-              :language="Object.keys(sortedWords)[selectedOrigin]"
+              :language="chosenLanguage"
             />
           </div>
 
@@ -121,6 +122,10 @@
             {{ word }}
           </v-chip> -->
         </v-chip-group>
+
+        <!-- Object.keys(sortedWords) = '{{ Object.keys(sortedWords) }}'<br/>
+        selectedOrigin = '{{ selectedOrigin }}'<br/>
+        Object.keys(sortedWords)[selectedOrigin] = '{{ Object.keys(sortedWords)[selectedOrigin] }}'<br/> -->
       </v-col>
     </v-row>
   </v-container>
@@ -134,9 +139,22 @@ import { computed } from "vue";
 import { ref } from "vue";
 
 import EditorEtymologyChip from "@/components/EditorEtymologyChip.vue";
+import { watch } from "vue";
+
+const editorStore = useEditorStore();
+const {
+  autoSort,
+  lookupWord,
+} = storeToRefs(editorStore);
+const appStore = useAppStore();
+const {
+  etymologies,
+} = storeToRefs(appStore);
 
 const selectedOrigin = ref(-1);
 const rawText = ref("");
+const chosenLanguage = ref("");
+
 const splitRawText = computed(() => {
   const words = rawText.value.match(/(\b[^\s]+\b)/g);
   if (autoSort.value) {
@@ -205,13 +223,10 @@ const sortedWords = computed(() => {
   return sorted;
 });
 
-const editorStore = useEditorStore();
-const {
-  autoSort,
-  lookupWord,
-} = storeToRefs(editorStore);
-const appStore = useAppStore();
-const {
-  etymologies,
-} = storeToRefs(appStore);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+watch(sortedWords, async (_oldSortedWords, _newSortedWords) => {
+  const newValue = Object.keys(sortedWords.value).indexOf(chosenLanguage.value);
+  // console.log(`Watch triggered: ${selectedOrigin.value} > ${newValue} (index of ${chosenLanguage.value})\nkeys = '${Object.keys(sortedWords.value)}'`);
+  selectedOrigin.value = newValue;
+});
 </script>
