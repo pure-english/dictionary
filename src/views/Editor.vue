@@ -2,12 +2,12 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12">
-        <!-- <v-textarea
+        <v-textarea
           variant="outlined"
           counter
           v-model="rawText"
         >
-        </v-textarea> -->
+        </v-textarea>
 
         <!-- <input-highlighter
           style="min-width: 700px; min-height: 300px;"
@@ -28,13 +28,15 @@
           </highlightInput>
         </div> -->
 
-        <div class="outer">
-          <div class="inner">1</div>
-          <div class="inner">2</div>
-          <div class="inner">3</div>
-          <div class="inner">4</div>
-          <div class="inner">7</div>
-        </div>
+        <!-- <div class="outer">
+          <div class="inner">
+            <textarea name="" id="" cols="30" rows="10"></textarea>
+          </div>
+
+          <div class="inner">
+            2
+          </div>
+        </div> -->
       </v-col>
     </v-row>
 
@@ -142,7 +144,7 @@ function analyse() {
 </script>
 
 <style scoped>
-.editor-input {
+/* .editor-input {
   min-height: 200px;
   overflow-wrap: normal;
   display: flex;
@@ -152,4 +154,8 @@ function analyse() {
 .inner {
   position: absolute;
 }
+
+.outer {
+  position: sticky;
+} */
 </style>
