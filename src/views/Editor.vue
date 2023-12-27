@@ -24,14 +24,14 @@
     </v-row>
 
     <!-- Word origin filtering -->
-    <!-- v-row -->
+    <!-- Origins -->
     <v-row>
       <v-col>
         <h4>Origins</h4>
 
+        <!-- multiple -->
         <v-chip-group
           column
-          multiple
         >
           <v-chip
             v-for="(origin, index) in ['Norse', 'Old English']"
@@ -45,6 +45,8 @@
         </v-chip-group>
       </v-col>
     </v-row>
+
+    <!-- Sub-origins -->
 
     <!-- List of words with highlighting -->
     <v-row>

@@ -466,6 +466,13 @@ const searchedWord = computed(() => {
   return route.query.word?.toString() ?? '';
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+watch(searchedWord, async (_oldSearchedWord, _newSearchedWord) => {
+  if (props.isEmbedded) {
+    refreshSearch();
+  }
+});
+
 const emptyAnglishFuzzyResults: Array<AnglishToEnglishEntry> = [];
 const anglishFuzzyResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
 const anglishExactResults: Ref<Array<AnglishToEnglishEntry>> = ref([]);
