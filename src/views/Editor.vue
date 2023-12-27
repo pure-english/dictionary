@@ -54,7 +54,7 @@
 
     <!-- Word origin filtering -->
     <!-- Origins -->
-    <v-row>
+    <v-row v-if="Object.keys(sortedWords).length > 1">
       <v-col>
         <h4>Origins</h4>
 
@@ -87,19 +87,31 @@
           mandatory
           selected-class="text-primary"
         >
-          <editor-etymology-chip
-            v-for="(word, index) in sortedWords[Object.keys(sortedWords)[selectedOrigin]]"
-            :key="index"
-            @lookup="lookupWord = word"
-            :word="word"
-            :language="Object.keys(sortedWords)[selectedOrigin]"
-          >
+          <div v-if="(!selectedOrigin) || selectedOrigin === -1">
+            <editor-etymology-chip
+              v-for="(word, index) in textWithEtymology"
+              :key="index"
+              @lookup="lookupWord = word.word"
+              :word="word.word"
+              :language="word.origin"
+            />
+          </div>
+
+          <div v-else>
+            <editor-etymology-chip
+              v-for="(word, index) in sortedWords[Object.keys(sortedWords)[selectedOrigin]]"
+              :key="index"
+              @lookup="lookupWord = word"
+              :word="word"
+              :language="Object.keys(sortedWords)[selectedOrigin]"
+            />
+          </div>
+
             <!--
             @lookup="lookupWord = word.word"
             :word="word.word"
             :language="word.origin"
              -->
-          </editor-etymology-chip>
 
           <!-- <v-chip
             v-for="(word, index) in splitRawText"
@@ -123,7 +135,7 @@ import { ref } from "vue";
 
 import EditorEtymologyChip from "@/components/EditorEtymologyChip.vue";
 
-const selectedOrigin = ref();
+const selectedOrigin = ref(-1);
 const rawText = ref("");
 const splitRawText = computed(() => {
   const words = rawText.value.match(/(\b[^\s]+\b)/g);
@@ -169,6 +181,8 @@ const sortedWords = computed(() => {
       } else {
         sorted[word.origin] = [word.word];
       }
+
+      sorted[word.origin] = [...new Set(sorted[word.origin])] ?? [];
     }
 
     if (word.sub_origins) {
@@ -182,6 +196,8 @@ const sortedWords = computed(() => {
             sorted[subOrigin] = [word.word];
           }
         }
+
+        sorted[subOrigin] = [...new Set(sorted[subOrigin])] ?? [];
       }
     }
   });
@@ -199,20 +215,3 @@ const {
   etymologies,
 } = storeToRefs(appStore);
 </script>
-
-<style scoped>
-/* .editor-input {
-  min-height: 200px;
-  overflow-wrap: normal;
-  display: flex;
-  flex-grow: 1;
-}
-
-.inner {
-  position: absolute;
-}
-
-.outer {
-  position: sticky;
-} */
-</style>
