@@ -1,7 +1,35 @@
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer">
-      <!--  -->
+      <!-- <v-list-item title="Anglish Editor" subtitle="by Cu"></v-list-item> -->
+
+      <v-divider></v-divider>
+
+      <v-list>
+        <v-list-item
+          link
+          title="Dictionary"
+          @click="$router.push({ path: '/' })"
+        />
+
+        <v-list-item
+          link
+          title="Wordlist"
+          @click="$router.push({ path: '/list/' })"
+        />
+
+        <v-list-item
+          link
+          title="Name Generator"
+          href="https://pure-english.github.io/name-generator/"
+        />
+      </v-list>
+
+      <v-spacer></v-spacer>
+
+      <v-list-item>
+        <sub>This program is still in-development. Bugs may exist.</sub>
+      </v-list-item>
     </v-navigation-drawer>
 
     <!-- Dictionary/Search -->

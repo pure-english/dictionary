@@ -22,7 +22,7 @@
       scores (by stopping them from being added in the first place) that also
       have Old English. Therefore, it only counts Germanic words that aren't
       from Old English. Put Norse words there too, maybe.
-- [ ] Add a search button inside of the search
+- [ ] Add a search button (icon) inside of the search for mobile users
 - [ ] Ability to dismiss words that are fine
     - [ ] Ability to retrieve them back
 - [ ] Have a maximum height for the chips list, with a scrollbar in the middle,
@@ -30,6 +30,7 @@
   bad).
 - [x] Number of words per origin
 - [ ] Option to not just copy, but instead insert the letters into the field
+- [ ] Have dictionary search be sticky
 
 ### Editor errors
 
