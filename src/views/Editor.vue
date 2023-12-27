@@ -86,13 +86,22 @@
           mandatory
           selected-class="text-primary"
         >
-          <v-chip
+          <editor-etymology-chip
+            v-for="(word, index) in textWithEtymology"
+            :key="index"
+            @lookup="lookupWord = word.word"
+            :word="word.word"
+            :language="word.origin"
+          >
+          </editor-etymology-chip>
+
+          <!-- <v-chip
             v-for="(word, index) in splitRawText"
             :key="index"
             @click="lookupWord = word"
           >
             {{ word }}
-          </v-chip>
+          </v-chip> -->
         </v-chip-group>
       </v-col>
     </v-row>
@@ -100,10 +109,13 @@
 </template>
 
 <script setup lang="ts">
+import { useAppStore } from "@/store/app";
 import { useEditorStore } from "@/store/editor";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { ref } from "vue";
+
+import EditorEtymologyChip from "@/components/EditorEtymologyChip.vue";
 
 const rawText = ref("");
 const splitRawText = computed(() => {
@@ -113,23 +125,40 @@ const splitRawText = computed(() => {
   }
   return [...new Set(words)];
 });
+const textWithEtymology = computed(() => {
+  const words = splitRawText.value.map((word) => {
+    if (word in etymologies.value) {
+      return {
+        "word": word,
+        ...etymologies.value[word],
+      }
+    } else if (word.toLowerCase() in etymologies.value) {
+      return {
+        "word": word.toLowerCase(),
+        ...etymologies.value[word],
+      }
+    } else {
+      return {
+        "word": word,
+        "origin": "Unknown",
+        "sub_origins": [],
+      }
+    }
+  });
 
-// const rules = computed(() => {
-//   return [
-//     {
-//       regex: new RegExp(`/${lookupWord.value}/`, "gim"),
-//       class: "highlight",
-//       tag: "span",
-//     }
-//   ];
-// });
+  return words;
+});
 
-const store = useEditorStore();
+const editorStore = useEditorStore();
 const {
   autoAnalyse,
   autoSort,
   lookupWord,
-} = storeToRefs(store);
+} = storeToRefs(editorStore);
+const appStore = useAppStore();
+const {
+  etymologies,
+} = storeToRefs(appStore);
 
 function analyse() {
   console.log("Analysing input…");
