@@ -1,5 +1,13 @@
 # Pure English Dictionary
 
+## Editor
+
+- [ ] Latinometer functionality
+    - [ ] Clicking on a word (down below) brings up alternatives
+- [ ] Anglish spelling (and Norse and French) iframes in the sidebar
+- [ ] Option menu to hide specific stuff in the searches
+- [ ] Ability to put in Thorn and Wynn, lowercase and uppercase, via buttons
+
 ## TODO
 
 - [x] Fix duplicates of search due to second Anglish spellings
@@ -18,7 +26,7 @@
 - [x] In the "Other Results" section, only include the meanings of words with a
   relevant definition, instead of every single definition
 - [x] Word definitions need right padding
-- [ ] Tell you if a word is Germanic or not
+- [x] Tell you if a word is Germanic or not
 * Add to wordlist:
     - [x] Sexuality
     - [ ] Months and Holidays
@@ -29,10 +37,10 @@
     - [ ] Dead Suffixes
 - [x] Make searches case-insensitive (easy for search a bit harder for
   definitions)
-- [ ] Have a note at the start for specific exact matches
-    - [ ] False friends warning -
+- [x] Have a note at the start for specific exact matches
+    - [x] False friends warning -
       https://anglisc.miraheze.org/wiki/False_Friends
-    - [ ] Will also display if a word is Germanic or not
+    - [x] Will also display if a word is Germanic or not
 - [ ] Edit "to use" words, add ones that aren't there by looking through the
   "Helpful Anglish Words" page
 - [x] Separate "exact match" and "related match" in the "Other Results"

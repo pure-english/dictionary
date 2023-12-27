@@ -32,6 +32,17 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/editor",
+    component: () => import('@/layouts/Editor.vue'),
+    children: [
+      {
+        path: "",
+        name: "Editor",
+        component: () => import("@/views/Editor.vue"),
+      }
+    ],
+  },
   // {
   //   path: "/word/:word",
   //   component: import('@/views/Word.vue'),
