@@ -23,6 +23,13 @@
       have Old English. Therefore, it only counts Germanic words that aren't
       from Old English. Put Norse words there too, maybe.
 - [ ] Add a search button inside of the search
+- [ ] Ability to dismiss words that are fine
+    - [ ] Ability to retrieve them back
+- [ ] Have a maximum height for the chips list, with a scrollbar in the middle,
+  so that if I need things below the word list it won't clog it up (if it's too
+  bad).
+- [x] Number of words per origin
+- [ ] Option to not just copy, but instead insert the letters into the field
 
 ### Editor errors
 
@@ -30,6 +37,8 @@
 - [ ] Fix picking the first Origin resulting in nothing happening
 - [ ] If you unselect a word origin and then begin to type, should the origins
   shuffle around it will reselect said word origin
+- [ ] If a selected word origin disappears while deleting words, then it will
+  just select whichever new origin is there
 
 ## TODO
 

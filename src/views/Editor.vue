@@ -25,6 +25,7 @@
           counter
           v-model="rawText"
           id="user-input"
+          clearable
         >
         </v-textarea>
       </v-col>
@@ -50,7 +51,7 @@
             @click="chosenLanguage = origin"
             :style="`color: ${originColors[origin as keyof typeof originColors].color};`"
           >
-            {{ origin }}
+            {{ origin }} ({{ sortedWords[origin].length }})
           </v-chip>
         </v-chip-group>
       </v-col>
@@ -192,6 +193,9 @@ const sortedWords = computed(() => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 watch(sortedWords, async (_oldSortedWords, _newSortedWords) => {
   const userInput = document.getElementById("user-input");
+
+  console.log(`userInput === document.activeElement = ${userInput === document.activeElement}`);
+  console.log(`selectedOrigin.value = ${selectedOrigin.value}`);
 
   if (!(userInput === document.activeElement && selectedOrigin.value)) {
     const newValue = Object.keys(sortedWords.value).indexOf(chosenLanguage.value);

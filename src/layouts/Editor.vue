@@ -16,6 +16,7 @@
         v-model="dictionarySearch"
         append-inner-icon="mdi-search"
         @keydown.enter="lookupWord = dictionarySearch"
+        clearable
       >
       </v-text-field>
 
