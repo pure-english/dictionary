@@ -59,7 +59,7 @@
 
     <p><sub>This project is still in progress, expect errors.</sub></p>
 
-    <p><sub>v1.9.0 (2023-12-26)</sub></p>
+    <p><sub>v1.9.1 (2023-12-27)</sub></p>
   </center>
 </template>
 

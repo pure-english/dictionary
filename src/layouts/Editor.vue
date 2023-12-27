@@ -120,7 +120,6 @@ import { useEditorStore } from "@/store/editor";
 import { storeToRefs } from "pinia";
 
 const drawer = ref(true);
-const searchDrawer = ref(true);
 const settings = ref(false);
 
 const store = useEditorStore();
@@ -128,6 +127,7 @@ const {
   lookupWord,
   autoSort,
   dictionarySearch,
+  searchDrawer,
 } = storeToRefs(store);
 
 </script>
