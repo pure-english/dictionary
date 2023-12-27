@@ -17,6 +17,7 @@
       </v-col>
     </v-row>
 
+    <!-- User input -->
     <v-row justify="center">
       <v-col cols="12">
         <v-textarea
@@ -46,6 +47,7 @@
             outlined
             variant="outlined"
             @click="chosenLanguage = origin"
+            :style="`color: ${originColors[origin as keyof typeof originColors].color};`"
           >
             {{ origin }}
           </v-chip>
@@ -83,25 +85,7 @@
               :language="chosenLanguage"
             />
           </div>
-
-            <!--
-            @lookup="lookupWord = word.word"
-            :word="word.word"
-            :language="word.origin"
-             -->
-
-          <!-- <v-chip
-            v-for="(word, index) in splitRawText"
-            :key="index"
-            @click="lookupWord = word"
-          >
-            {{ word }}
-          </v-chip> -->
         </v-chip-group>
-
-        <!-- Object.keys(sortedWords) = '{{ Object.keys(sortedWords) }}'<br/>
-        selectedOrigin = '{{ selectedOrigin }}'<br/>
-        Object.keys(sortedWords)[selectedOrigin] = '{{ Object.keys(sortedWords)[selectedOrigin] }}'<br/> -->
       </v-col>
     </v-row>
   </v-container>
@@ -116,6 +100,7 @@ import { ref } from "vue";
 
 import EditorEtymologyChip from "@/components/EditorEtymologyChip.vue";
 import { watch } from "vue";
+import { originColors } from "@/variables";
 
 const editorStore = useEditorStore();
 const {

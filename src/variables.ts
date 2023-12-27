@@ -31,7 +31,7 @@ export const originColors = {
   },
   "Mixed": {
     language: "Mixed",
-    color: "#FFEB3B",
+    color: "#FBC02D",
   },
   "German": {
     language: "German",
