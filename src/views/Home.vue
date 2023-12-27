@@ -28,6 +28,9 @@
       <b>Other links</b>
       <ul>
         <li>
+          <router-link to="./editor/">Anglish Editor</router-link> (for live editing)
+        </li>
+        <li>
           <router-link to="./list/">Interactive Wordlist</router-link> (for sorting and filtering)
         </li>
         <li>
@@ -56,7 +59,7 @@
 
     <p><sub>This project is still in progress, expect errors.</sub></p>
 
-    <p><sub>v1.8.1 (2023-12-26)</sub></p>
+    <p><sub>v1.9.0 (2023-12-26)</sub></p>
   </center>
 </template>
 

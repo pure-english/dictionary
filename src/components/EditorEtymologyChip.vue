@@ -31,7 +31,7 @@
     size="small"
     class="mx-1"
     color="red"
-    style="color: red !important;"
+    style="color: #F44336 !important;"
     v-else-if="props.language === 'Romance'"
     @click="emit('lookup')"
   >
